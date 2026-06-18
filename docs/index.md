@@ -11,6 +11,9 @@ title: CatalogueCanvas
 CatalogueCanvas is a self-hosted catalogue server. You ingest items as ZIP files, organise them into collections, enrich them with metadata and optional AI-generated descriptions, and
 publish curated portfolios as shareable slide-deck pages.
 
+   ![Item](assets/Items_CC.png)
+
+
 ## What it does
 
 - **Ingest** — one ZIP becomes one catalogue item; the main image is auto-converted to a WebP preview.
