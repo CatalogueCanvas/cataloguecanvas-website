@@ -8,10 +8,9 @@ title: Uploading items
 
 <p class="lead">Every portfolio starts with <strong>items</strong> — the individual works you catalogue in CatalogueCanvas. This guide covers adding files, the formats we support, and getting metadata right the first time.</p>
 
-!!! note "Before you begin"
+!!! info "Key Concept"
 
-    You'll need a workspace and at least one collection to file items into. New here? Walk
-    through [Quick start](../documentation/install.md) first — it takes about two minutes.
+    A key concept in this software is that a piece of work being stored is together with their metadata. Those being the necesary files to reproduce that piece of work, a json files with settings, a pdf file, pictures...etc
 
 ## Upload from the dashboard
 
