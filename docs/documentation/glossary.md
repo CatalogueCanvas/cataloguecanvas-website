@@ -81,11 +81,18 @@ An AI-generated summary of an item's preview image, produced by an **OpenAI-comp
 LLM** (local or hosted). API keys supplied per request are never stored.
 
 ### Admin
-The single privileged user, authenticated by password + session cookie, with full access.
+A privileged user, authenticated by password + session cookie, with full access: upload, edit,
+organise, configure, and publish.
 
-### Reader _(planned)_
-A proposed **view-only** role (sees content but no admin controls). Not yet implemented — see
-the [roadmap](roadmap.md).
+### Reader
+A **view-only** role available in multi-user mode. Can view the whole catalogue and download
+files (individual files, item ZIPs, bulk ZIPs) but cannot modify anything; admin-only menus and
+controls are hidden.
+
+### Multi-user mode
+An optional mode in which users sign in with a **username and password** and hold either the
+**Admin** or **Reader** role. The admin and reader passwords must differ. With it off, the
+instance uses a single-password admin login.
 
 ### Full backup
 A downloadable ZIP containing the SQLite database **plus all stored assets** across every library.

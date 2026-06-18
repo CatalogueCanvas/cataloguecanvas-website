@@ -38,5 +38,5 @@ Runs in one Docker container with SQLite; full export/backup built in.
 
 ## When it may _not_ be the right fit
 
-- You need multi-user accounts with granular per-user permissions today (current model: single admin + public portfolio viewers).
+- You need fine-grained per-user permissions beyond the two built-in roles (multi-user mode offers **Admin** and view-only **Reader**, plus public portfolio viewers).
 - You want a hosted/managed SaaS with no self-hosting.

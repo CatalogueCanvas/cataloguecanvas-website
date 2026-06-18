@@ -36,12 +36,14 @@
      stroke="#f0eee7"
      stroke-width="3.4"
      stroke-linecap="round"
-     id="path1" />
+     id="path1"
+     style="paint-order:stroke markers fill;stroke-linecap:round;stroke-width:4;stroke-dasharray:none;stroke:#c2c0b8;stroke-opacity:1" />
   <path
      d="m 31.31243,18.516237 a 9,9 0 1 0 0,10"
      fill="none"
      stroke="#ff7a4d"
      stroke-width="3.4"
      stroke-linecap="round"
-     id="path2" />
+     id="path2"
+     style="paint-order:stroke markers fill;stroke-linecap:round;stroke-width:4;stroke-dasharray:none;stroke:#ff5d27;stroke-opacity:1" />
 </svg>

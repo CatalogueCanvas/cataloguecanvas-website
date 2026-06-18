@@ -1,0 +1,80 @@
+{#- CatalogueCanvas docs footer — brand footer in the app's visual language.
+    Replaces Material's default meta footer. Keeps prev/next page links. -#}
+
+{% if "navigation.footer" in features %}
+  {% if page.previous_page or page.next_page %}
+    {% if page.meta and page.meta.hide %}
+      {% set hidden = "hidden" if "footer" in page.meta.hide %}
+    {% endif %}
+    <nav class="md-footer__inner md-grid" aria-label="{{ lang.t('footer') }}" {{ hidden }}>
+      {% if page.previous_page %}
+        {% set direction = lang.t("footer.previous") %}
+        <a href="{{ page.previous_page.url | url }}" class="md-footer__link md-footer__link--prev" aria-label="{{ direction }}: {{ page.previous_page.title | e }}">
+          <div class="md-footer__button md-icon">
+            {% set icon = config.theme.icon.previous or "material/arrow-left" %}
+            {% include ".icons/" ~ icon ~ ".svg" %}
+          </div>
+          <div class="md-footer__title">
+            <span class="md-footer__direction">{{ direction }}</span>
+            <div class="md-ellipsis">{{ page.previous_page.title }}</div>
+          </div>
+        </a>
+      {% endif %}
+      {% if page.next_page %}
+        {% set direction = lang.t("footer.next") %}
+        <a href="{{ page.next_page.url | url }}" class="md-footer__link md-footer__link--next" aria-label="{{ direction }}: {{ page.next_page.title | e }}">
+          <div class="md-footer__title">
+            <span class="md-footer__direction">{{ direction }}</span>
+            <div class="md-ellipsis">{{ page.next_page.title }}</div>
+          </div>
+          <div class="md-footer__button md-icon">
+            {% set icon = config.theme.icon.next or "material/arrow-right" %}
+            {% include ".icons/" ~ icon ~ ".svg" %}
+          </div>
+        </a>
+      {% endif %}
+    </nav>
+  {% endif %}
+{% endif %}
+
+<footer class="md-footer cc-footer">
+  <div class="md-grid cc-footer__inner">
+
+    <div class="cc-footer__brand">
+      <a class="cc-footer__mark" href="{{ '.' | url }}" aria-label="CatalogueCanvas">
+        <img class="cc-footer__logo" src="{{ 'assets/logotext.png' | url }}" alt="CatalogueCanvas" />
+      </a>
+      <p class="cc-footer__tag">A domain-agnostic, self-hosted catalogue server. Your catalogue, your disk, your data.</p>
+    </div>
+
+    <nav class="cc-footer__cols" aria-label="Footer">
+      <div class="cc-footer__col">
+        <p class="cc-footer__lbl">Showcase</p>
+        <a href="{{ 'showcase/ethos/' | url }}">Ethos</a>
+        <a href="{{ 'showcase/intro/' | url }}">Introduction</a>
+        <a href="{{ 'showcase/uses/' | url }}">Uses &amp; for whom</a>
+      </div>
+      <div class="cc-footer__col">
+        <p class="cc-footer__lbl">Docs</p>
+        <a href="{{ 'documentation/install/' | url }}">Install</a>
+        <a href="{{ 'documentation/user/' | url }}">User docs</a>
+        <a href="{{ 'documentation/admins/' | url }}">Admin docs</a>
+        <a href="{{ 'documentation/glossary/' | url }}">Glossary</a>
+      </div>
+      <div class="cc-footer__col">
+        <p class="cc-footer__lbl">Project</p>
+        <a href="{{ 'documentation/roadmap/' | url }}">Roadmap</a>
+        {% if config.repo_url %}
+          <a href="{{ config.repo_url }}" target="_blank" rel="noopener">GitHub</a>
+          <a href="{{ config.repo_url }}/issues" target="_blank" rel="noopener">Report an issue</a>
+        {% endif %}
+      </div>
+    </nav>
+
+  </div>
+
+  <div class="cc-footer__meta md-grid">
+    {% include "partials/copyright.html" %}
+    {% include "partials/social.html" ignore missing %}
+  </div>
+</footer>

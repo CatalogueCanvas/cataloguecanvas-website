@@ -116,15 +116,19 @@ body { font-family: var(--sans); -webkit-font-smoothing: antialiased; }
 }
 .md-header__title { font-weight: 700; letter-spacing: -0.01em; }
 
-/* Brand logo — show the light mark by default, swap to the dark-mode variant
-   in the dark scheme. The <img src> set by theme.logo is the light logo. */
+/* Brand logo (top bar) — SVG C-mark; swap to the dark-mode variant in the
+   dark scheme. The <img src> set by theme.logo is the light SVG. */
 .md-header__button.md-logo { padding: 0; margin-right: 4px; }
 .md-header__button.md-logo img,
 .md-header__button.md-logo svg { height: 1.6rem; width: auto; }
 [data-md-color-scheme="catalog-dark"] .md-header__button.md-logo img {
-  content: url("../assets/logo_dark.png");
+  content: url("../assets/logo_dark.svg");
 }
 .md-tabs { background: transparent; color: var(--ink-2); }
+
+/* GitHub source: keep the icon, hide the repo name/URL text */
+.md-header__source .md-source__repository { display: none; }
+.md-header__source { width: auto; }
 
 /* ============================ SIDEBAR NAV ============================ */
 .md-nav { font-size: 13.5px; }
@@ -253,10 +257,47 @@ body { font-family: var(--sans); -webkit-font-smoothing: antialiased; }
   border: 1px solid var(--border); border-radius: 6px;
 }
 
-/* ============================ FOOTER PAGER ============================ */
+/* ============================ FOOTER PAGER (prev/next) ============================ */
 .md-footer__inner { border-top: 1px solid var(--border); }
-.md-footer { background: var(--bg); color: var(--ink-2); }
 .md-footer__link { opacity: 1; }
 .md-footer__title { font-family: var(--serif); }
-.md-footer-meta { background: var(--panel-2); }
-.md-copyright { color: var(--ink-3); font-family: var(--mono); font-size: 11px; }
+.md-footer__direction { font-family: var(--mono); font-size: 10px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--ink-3); opacity: 1; }
+
+/* ============================ BRAND FOOTER ============================ */
+.cc-footer { background: var(--panel); color: var(--ink-2); border-top: 1px solid var(--border); }
+.cc-footer__inner {
+  display: grid; grid-template-columns: minmax(0, 1.4fr) minmax(0, 2fr);
+  gap: clamp(28px, 5vw, 72px); align-items: start;
+  padding: 48px clamp(16px, 3vw, 26px) 36px;
+}
+
+.cc-footer__mark { display: inline-flex; align-items: center; text-decoration: none; }
+.cc-footer__logo { height: 44px; width: auto; display: block; }
+[data-md-color-scheme="catalog-dark"] .cc-footer__logo { content: url("../assets/logotext_dark.png"); }
+.cc-footer__tag { margin: 14px 0 0; font-size: 13.5px; color: var(--ink-3); max-width: 38ch; line-height: 1.55; }
+
+.cc-footer__cols { display: grid; grid-template-columns: repeat(3, 1fr); gap: 28px; }
+.cc-footer__col { display: flex; flex-direction: column; gap: 9px; }
+.cc-footer__lbl {
+  font-family: var(--mono); font-size: 10px; text-transform: uppercase; letter-spacing: 0.16em;
+  color: var(--ink-3); margin: 0 0 4px;
+}
+.cc-footer__col a {
+  text-decoration: none; color: var(--ink-2); font-size: 13.5px; font-weight: 500;
+  transition: color .15s;
+}
+.cc-footer__col a:hover { color: var(--accent); }
+
+.cc-footer__meta {
+  display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 12px;
+  padding: 16px clamp(16px, 3vw, 26px); border-top: 1px solid var(--border);
+}
+.cc-footer__meta .md-copyright { font-family: var(--mono); font-size: 11px; color: var(--ink-3); letter-spacing: 0.02em; margin: 0; width: auto; }
+.cc-footer__meta .md-copyright__highlight { color: var(--ink-3); }
+.cc-footer__meta .md-copyright a { color: var(--ink-2); }
+.cc-footer__meta .md-copyright a:hover { color: var(--accent); }
+
+@media (max-width: 760px) {
+  .cc-footer__inner { grid-template-columns: 1fr; gap: 32px; }
+  .cc-footer__cols { grid-template-columns: repeat(2, 1fr); }
+}

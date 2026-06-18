@@ -12,21 +12,26 @@ For deployment and configuration, see [Admin documentation](admins.md).
 
 ## Roles you'll encounter
 
-- **Authenticated user (admin session)** — can upload, edit, organise, and publish.
+- **Admin** — can upload, edit, organise, configure, and publish.
+- **Reader** _(multi-user mode)_ — can view the whole catalogue and download files, but cannot
+  modify anything; admin-only menus and controls are hidden.
 - **Public viewer** — no login; can only view portfolios marked **Public** via their link.
-
-!!! note
-
-    The current release uses a single admin login. A view-only **Reader** role is on the
-    [roadmap](roadmap.md).
 
 ## Signing in
 
-Open the app and enter the admin password. Your session is held in a secure cookie.
+If the instance runs in **multi-user mode**, sign in with your **username and password**;
+otherwise enter the admin password. Your session is held in a secure cookie, and your username
+is shown next to the **Log out** button.
 
 !!! warning
 
     After 5 failed attempts within 5 minutes, login is temporarily blocked.
+
+## What Readers can do
+
+Readers get a **download-only** view of the catalogue. They can download individual files, a
+single item as a ZIP, and a multi-select bulk ZIP — without gaining edit access. Editing,
+tagging, favouriting, and LLM actions remain admin-only.
 
 ## Adding work (upload)
 
