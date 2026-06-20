@@ -28,11 +28,11 @@ title: Roadmap
 - ✅ Build provenance recorded (git SHA + build date)
 - ✅ Redacted diagnostic report (Settings or CLI)
 - ✅ On-brand 404 page
+- ✅ Catalogue sorting & filtering controls
 
 
 ## In progress / planned
 
-- 📋 Catalogue sorting & filtering controls
 - 💡 Render/store p5.js processing outputs
 - 💡 Form a community
 - 💡 Security audit for exposed versions
