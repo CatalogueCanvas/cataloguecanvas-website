@@ -88,8 +88,14 @@ uses a single-password admin login.
 Per-item free text written in **Markdown**, rendered as formatted text with a raw-edit mode.
 
 ### Portfolio
-A curated, ordered set of items published as a **slide-deck**. Has a title, description, and a
-**slug**. Can be marked **Public** to be viewable without logging in.
+A curated, ordered set of items published as a **slide-deck**. Has a title, description, a
+**slug**, and one of four presentation **themes** (Ledger, Kinetic, Brutalist, Riso). Can be
+marked **Public** to be viewable without logging in, or exported as a static site.
+
+### Static site export
+A self-contained `.zip` of a public portfolio — a single `index.html` with the chosen theme
+baked in, the WebP previews, and a `README.txt`. Uses only relative paths, so it can be hosted
+on any static host with no server.
 
 ### Preview
 The WebP image generated from an item's main image. The source image is chosen by priority:

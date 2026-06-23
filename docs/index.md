@@ -11,16 +11,14 @@ hide:
 
 <p class="kicker">Self-hosted catalogue server</p>
 
-# Your catalogue, your disk, your data
+# Your catalogue, your disks, your data
 
 <p class="cc-hero__tagline">
-Ingest your work as ZIPs, organise it into collections, enrich it with metadata and
-optional AI descriptions, then publish curated portfolios. It all runs in one Docker
-container on your own hardware, with no account and no lock-in.
+Organise your digital art work into collections, enrich it with metadata, reproducible code, export curated portfolios. It all runs in one Docker container on your own hardware, with no account and no lock-in.
 </p>
 
 <div class="cc-hero__cta" markdown>
-[Get started](documentation/install.md){ .cc-btn .cc-btn--primary }
+[Get started](documentation/intro.md){ .cc-btn .cc-btn--primary }
 [View on GitHub](https://github.com/ToroRojo-code/CatalogueCanvas){ .cc-btn }
 </div>
 
@@ -41,19 +39,19 @@ One ZIP becomes one catalogue item. The main image is converted to a WebP previe
 <div class="cc-feature" markdown>
 :material-folder-multiple-outline:{ .cc-feature__icon }
 ### Organise
-Group items into collections and a built-in Favourites set, then search across everything.
+Group items into collections and Favourites, search across everything.
 </div>
 
 <div class="cc-feature" markdown>
-:material-robot-outline:{ .cc-feature__icon }
-### Enrich
-Edit titles, tags and Markdown notes, or describe items with a local vision model.
+:octicons-compose-24:{ .cc-feature__icon }
+### Annotate
+Edit titles, tags and Markdown notes, batch editing, or describe items with a local vision model.
 </div>
 
 <div class="cc-feature" markdown>
 :material-share-variant-outline:{ .cc-feature__icon }
 ### Publish
-Assemble portfolios and share them at a public `/p/<slug>` link.
+Assemble portfolios and share them.
 </div>
 
 </div>
@@ -62,10 +60,8 @@ Assemble portfolios and share them at a public `/p/<slug>` link.
 
 ## Built for file-based creative work
 
-Artists catalogue a body of work and publish a portfolio without building a website.
-Generative coders keep the rendered image and its source in the same item. Designers
-organise and share asset sets. It suits studios and self-hosters who want a catalogue
-on their own hardware rather than another per-seat subscription.
+Digital artists catalogue a body of work and publish a portfolio without building a website.
+Generative coders keep the rendered image and its source in the same item. Designers organise and share asset sets. It suits studios and self-hosters who want a catalogue on their own hardware rather than another per-seat subscription.
 
 [Who it's for, and when it isn't](documentation/uses.md){ .cc-btn }
 

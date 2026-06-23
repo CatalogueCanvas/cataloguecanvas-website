@@ -118,14 +118,79 @@ catalogue is no longer sent to your browser to filter as you type.
 <ol class="steps" markdown>
 <li markdown>Create a portfolio with a **title** and **description**.</li>
 <li markdown>Add and order the items it contains.</li>
+<li markdown>Choose one of four presentation **themes** (see below).</li>
 <li markdown>A **slug** is auto-generated (e.g. `quiet-amber-loom`) — or set your own.</li>
 <li markdown>Mark it **Public** to expose it at `/p/<slug>` as a slide-deck presentation.</li>
 <li markdown>Share the link — no login needed to view a public portfolio.</li>
+<li markdown>Or export it as a static site, ready to upload to a web server[^www].</li>
 </ol>
 
 !!! note
 
     Private portfolios return "not found" to anyone without admin access.
+
+### Themes
+
+Each public portfolio is dressed in one of four presentation themes, chosen per
+portfolio in the portfolio editor. A theme carries its own fixed colours and type,
+so a published portfolio looks the same regardless of the studio's own
+light/dark/accent appearance. Existing portfolios use **Ledger** by default.
+
+<div class="grid cards" markdown>
+
+-   __Ledger__ (default)
+
+    ---
+
+    An archival specimen sheet.
+
+    <figure markdown="span">
+      ![Ledger theme](../assets/porfolio_Ledger.png){ width="300" }
+    </figure>
+
+-   __Kinetic__
+
+    ---
+
+    Dark, with an animated capabilities ribbon and a cursor-following thumbnail.
+
+    <figure markdown="span">
+      ![Kinetic theme](../assets/porfolio_Kinetic.png){ width="300" }
+    </figure>
+
+-   __Brutalist__
+
+    ---
+
+    Stark uppercase with hard rules.
+
+    <figure markdown="span">
+      ![Brutalist theme](../assets/porfolio_Brutalist.png){ width="300" }
+    </figure>
+
+-   __Riso__
+
+    ---
+
+    A risograph overprint look.
+
+    <figure markdown="span">
+      ![Riso theme](../assets/porfolio_Riso.png){ width="300" }
+    </figure>
+
+</div>
+
+### Export as a static site
+
+A public portfolio can be downloaded as a self-contained website. The **Export
+static site (.zip)** button (next to **Preview deck**) produces a folder with a
+single `index.html` — with the chosen theme baked in — the WebP previews, and a
+`README.txt` giving hosting steps.
+
+- The export needs no server and uses only relative paths, so it can be hosted on
+  any static host[^www].
+- Only the WebP previews are bundled (the same images the public deck shows);
+  source attachments are not included.
 
 ## Tips & FAQ
 
@@ -133,3 +198,6 @@ catalogue is no longer sent to your browser to filter as you type.
 - **Several images in one ZIP?** The preview is chosen by priority (PNG → JPEG → TIFF → SVG); a note explains which was used.
 - **Can't find an item?** Search covers titles, notes, tags, and the contents of uploaded `metadata.json` / `metadata.toml` — try a value from the item's metadata.
 - **Keyboard:** ← / → move between items on the item page.
+
+
+[^www]: **Static web server** — There are free services with free tier web server perfect for this role like [codeberg](https://codeberg.page/), [github](https://docs.github.com/en/pages), [tiiny.host](https://tiiny.host/), [cloudflare](https://pages.cloudflare.com/)

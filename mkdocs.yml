@@ -63,10 +63,9 @@ markdown_extensions:
 nav:
   - Introduction: index.md
   - Documentation:
-      - Home: home.md
+      - Introduction: documentation/intro.md
       - Ethos: documentation/ethos.md
       - Uses & for whom: documentation/uses.md
-      - Introduction: documentation/intro.md
       - Install: documentation/install.md
       - User documentation: documentation/user.md
       - Uploading items: documentation/uploading.md
