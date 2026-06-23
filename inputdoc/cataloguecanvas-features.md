@@ -1,6 +1,22 @@
 <DO NOT REMOVE>!!! This File handover changes done in CatalogueCanvas to the website-documentation incorporation in here </DO NOT REMOVE>
 # CatalogueCanvas — Functionality & Instructions
 
+## 2026-06-23 — Lighter exports: compression & screen resize
+
+### New: shrink exported images on export
+- The **Export static site (.zip)** panel (public portfolio editor) now has two
+  optional controls applied at download time:
+  - **Image quality** slider (40–95, default 85) — sets the WebP compression of
+    the bundled previews.
+  - **Resize images for screen** toggle with a **Max size** slider (480–4000px,
+    default 1280px) — caps the longest edge so large previews are downscaled for
+    on-screen sharing. Aspect ratio is preserved.
+- Both are **per-export only** — they are not saved to the portfolio. Leaving
+  quality at 85 with resize off produces the same files as before (originals are
+  copied untouched, no re-encode).
+- Works together with the watermark: when a watermark is set, it is burned in
+  after resizing, so it stays proportional to the final image.
+
 ## 2026-06-23 — Portfolio themes & static-site export
 
 ### New: selectable portfolio themes
