@@ -8,6 +8,14 @@ title: Roadmap
 
 <p class="lead">Planned and proposed direction.</p>
 
+## In progress / planned (not in order)
+
+- 🎥 Render/store p5.js processing outputs
+- 🔐 Watermark on portfolio images 
+- 📝 Security audit for exposed versions
+- 💡 Templates for portfolios — a rule-set skill for an LLM to generate one
+- 👀 Code Test [coverture](https://www.codacy.com/coverage)
+
 
 ## Shipped
 
@@ -31,12 +39,5 @@ title: Roadmap
 - ✅ Catalogue sorting & filtering controls
 
 
-## In progress / planned (not in order)
-
-- 🎥 Render/store p5.js processing outputs
-- 🔐 Watermark on portfolio images 
-- 📝 Security audit for exposed versions
-- 💡 Templates for portfolios — a rule-set skill for an LLM to generate one
-- 👀 Test [coverture](https://www.codacy.com/coverage)
 
 <!-- ✅🔐🎥💡👀 !®️♾️➰ 🔴🟠🟡🟢 -->
