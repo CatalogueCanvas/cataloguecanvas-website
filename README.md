@@ -1,5 +1,8 @@
 # CatalogueCanvas — Documentation Website
 
+[![Codacy Badge](https://app.codacy.com/project/badge/Grade/d6aaf28841f44ebc8c822f85f42e772a)](https://app.codacy.com/gh/ToroRojo-code/cataloguecanvas-website/dashboard?utm_source=gh&utm_medium=referral&utm_content=&utm_campaign=Badge_grade)
+
+
 The documentation and showcase website for [CatalogueCanvas](#about-cataloguecanvas), built with
 **MkDocs** and the **Material** theme. The visual language (oklch tokens, IBM Plex Mono / Spectral /
 Archivo type, vermilion accent, light/dark + accent switching) is ported from a Claude Design source.
