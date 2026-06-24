@@ -111,5 +111,4 @@ items will change before you commit.
     Still stuck? Check your connection and retry — partial uploads resume automatically for up
     to 24 hours.
 
-
 [^format]: **External Guide** — [basic markdown syntax](https://markdownguide.offshoot.io/basic-syntax/)
