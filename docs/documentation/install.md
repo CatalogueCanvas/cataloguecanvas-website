@@ -156,6 +156,7 @@ docker compose up --build
 | `CC_DB_PATH` | `<CC_DATA_DIR>/catalogue.db` | SQLite database file path |
 | `CC_STORAGE_DIR` | `<CC_DATA_DIR>/storage` | Directory for uploaded item assets |
 | `CC_STATIC_DIR` | `web/dist` | Directory of built frontend assets to serve |
+| `CC_LLM_ALLOWED_HOSTS` | _(unset)_ | Comma-separated hostnames/IPs the Describe feature may call. Unset = no restriction. Set to protect against SSRF (e.g. `ollama.lan,192.168.1.50`) |
 
 !!! note "Editors"
 

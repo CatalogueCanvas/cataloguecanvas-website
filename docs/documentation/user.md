@@ -192,6 +192,23 @@ single `index.html` — with the chosen theme baked in — the WebP previews, an
 - Only the WebP previews are bundled (the same images the public deck shows);
   source attachments are not included.
 
+Two optional controls sit in the export panel, applied at download time:
+
+- **Image quality** (40–95, default 85) — WebP compression for bundled previews. Reducing it shrinks file size at the cost of fidelity.
+- **Resize images for screen** — caps the longest edge at a configurable maximum (480–4000 px, default 1280 px), aspect ratio preserved. Useful when you don't want recipients downloading several-megabyte previews.
+
+Neither setting is saved to the portfolio. At the defaults (quality 85, resize off), the output is the same as before. A watermark, if set, is burnt in after resizing and stays proportional.
+
+### Restricting access with a share token
+
+By default a public portfolio is open to anyone with the link. Enabling a **share token** from the portfolio editor restricts it: visitors without a valid token get a 404. Once a recipient visits with the correct token, a cookie is set and they can return without pasting it again.
+
+From the editor you can toggle the token on or off, regenerate it (which invalidates the old one immediately), or copy the token-secured link directly.
+
+!!! note
+
+    Share tokens apply to the live server only. Static exports (`.zip` downloads) are unlisted but do not support token protection.
+
 ## Tips & FAQ
 
 - **Re-uploading the same ZIP?** It's deduplicated by content hash — no duplicate is created.

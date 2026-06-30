@@ -111,10 +111,20 @@ Edit the raw **TOML** prompt used to build the LLM request. Placeholders:
 - **Full backup** — a ZIP of the database **plus every stored asset** across all libraries.
 - Live stats shown: total items, total collections, items missing a preview.
 
+!!! warning "Exports are unencrypted"
+
+    Database and full-data exports are admin-only but unencrypted. Download and store them over a trusted channel.
+
 <figure markdown>
   ![Backup and export settings](../assets/sc_Backup_CatalogueCanvas.png)
   <figcaption>Settings → Backup &amp; export</figcaption>
 </figure>
+
+## Collections and portfolio visibility (multi-user mode)
+
+In multi-user mode each collection and portfolio has a **visibility** setting. **Admin only** (the default) hides the item from reader accounts entirely — it won't appear in lists, and direct URLs return "not found". **Readers** makes it visible to reader accounts as well.
+
+After an upgrade, all existing collections and portfolios land on admin-only. Admins need to change them to **Readers** explicitly. Public portfolios at `/p/<slug>` are unaffected by this setting.
 
 ## LLM / AI descriptions in depth
 
@@ -131,6 +141,15 @@ Edit the raw **TOML** prompt used to build the LLM request. Placeholders:
 - The request **timeout is 90 seconds**, to accommodate slower local models.
 - Failures report the **actual cause** (connection, HTTP error, non-JSON, or no choices
   returned) rather than an opaque error.
+- The `api_url` is validated **at settings-save time** — an invalid or non-allowlisted URL is rejected immediately with an error rather than failing silently at describe time.
+
+### LLM endpoint allowlist (`CC_LLM_ALLOWED_HOSTS`)
+
+`CC_LLM_ALLOWED_HOSTS` is optional. When set, it takes a comma-separated list of hostnames or IPs; any `api_url` whose host isn't on the list is rejected when you save settings. This stops the Describe feature from being redirected at internal services you didn't intend.
+
+Self-hosted servers on your LAN need to be listed explicitly, e.g. `CC_LLM_ALLOWED_HOSTS=ollama.lan,192.168.1.50`. Leave it unset for no restriction — the previous behaviour.
+
+See [Configuration](install.md#configuration) for all available environment variables.
 
 ## Findable metadata (FAIR)
 
@@ -151,6 +170,7 @@ Edit the raw **TOML** prompt used to build the LLM request. Placeholders:
   ingestion remains the display image.
 - Item IDs are unique `word-NNN` strings, checked against the database to avoid collisions.
 - Items are **deduplicated by content hash** at ingest.
+- Before extracting a ZIP, ingestion checks available disc space and enforces a per-file size cap as files are decompressed. An archive that would breach the limit is rejected with a clear error; normal uploads are not affected.
 
 ## Diagnostics
 
