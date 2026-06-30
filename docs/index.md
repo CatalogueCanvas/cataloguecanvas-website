@@ -11,7 +11,7 @@ hide:
 
 <p class="kicker">Self-hosted catalogue server</p>
 
-# Your catalogue, your disks, your data
+# Your catalogue, your discs, your data
 
 <p class="cc-hero__tagline">
 Organise your digital art work into collections, enrich it with metadata, reproducible code, export curated portfolios. It all runs in one Docker container on your own hardware, with no account and no lock-in.

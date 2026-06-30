@@ -38,7 +38,7 @@ Runs in one Docker container with SQLite; full export/backup built in.
 | Pair finished work with its source files | Multiple files per item, viewable or downloadable |
 | Auto-generate descriptions | Vision LLM (OpenAI-compatible, local or hosted) |
 | Share a curated showcase | Public portfolios at `/p/<slug>` |
-| Store work across disks | Multiple libraries |
+| Store work across discs | Multiple libraries |
 | Protect your data | One-click database + full-asset backup |
 
 ## When it may _not_ be the right fit

@@ -19,7 +19,7 @@ title: Install
 
 - Docker image: ~436 MB
 - RAM: ~256 MB for light use
-- Disk: scales with uploaded assets — size the data volume accordingly
+- Disc: scales with uploaded assets — size the data volume accordingly
 - CPU: a single core is sufficient
 
 ## Quick start (Docker)

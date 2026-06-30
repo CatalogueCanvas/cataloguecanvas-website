@@ -94,7 +94,7 @@ Edit the raw **TOML** prompt used to build the LLM request. Placeholders:
 
 ### Libraries (multi-storage)
 
-- Add libraries pointing at different **writable directories** (e.g. a second disk).
+- Add libraries pointing at different **writable directories** (e.g. a second disc).
     - Paths must already be **mounted into the container** and writable.
 - Set any library as the **default** for new uploads.
 - Constraints: a library's **path can't change** once it holds items; a library **can't be deleted**
@@ -165,7 +165,7 @@ See [Configuration](install.md#configuration) for all available environment vari
 ## How items are stored (operator view)
 
 - Each item lives under its library at `items/<item-id>/` with a `preview.webp` and an `other/` folder.
-- **SVGs are LZ4-compressed** on disk. Compressed files are served **exactly as stored, as a
+- **SVGs are LZ4-compressed** on disc. Compressed files are served **exactly as stored, as a
   download** — never decompressed or rendered in the browser. The WebP preview generated at
   ingestion remains the display image.
 - Item IDs are unique `word-NNN` strings, checked against the database to avoid collisions.

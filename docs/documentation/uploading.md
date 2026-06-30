@@ -15,11 +15,11 @@ title: Uploading items
 ## Upload from the dashboard
 
 The dashboard is the fastest way to add a handful of items. Drag files straight onto the
-dropzone, or browse from disk — CatalogueCanvas renders a preview plate for each one as it lands.
+dropzone, or browse from disc — CatalogueCanvas renders a preview plate for each one as it lands.
 
 <ol class="steps" markdown>
 <li markdown>Open the **Catalog** and click **Upload** in the top nav — or press <kbd>⌘</kbd> <kbd>U</kbd> from anywhere.</li>
-<li markdown>Drag files onto the dropzone, or click **Browse** to pick them from disk.</li>
+<li markdown>Drag files onto the dropzone, or click **Browse** to pick them from disc.</li>
 <li markdown>Wait for thumbnails to render. Large images and PDFs may take a moment to generate a cover plate.</li>
 <li markdown>Click **Save to catalog**. New items land in your default collection, ready to tag.</li>
 </ol>

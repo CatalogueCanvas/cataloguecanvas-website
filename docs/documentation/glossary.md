@@ -72,7 +72,7 @@ A unique, human-friendly identifier auto-assigned at ingestion, of the form `wor
 ## Library
 
 A **storage location** (a folder/path) where item assets are kept. Multiple libraries allow
-storing items across different disks or paths. One library is the **default** for new uploads.
+storing items across different discs or paths. One library is the **default** for new uploads.
 
 ## LLM description
 
@@ -81,7 +81,7 @@ LLM** (local or hosted). API keys supplied per request are never stored.
 
 ## LZ4
 
-A fast compression format. **SVG source files are stored LZ4-compressed** on disk and
+A fast compression format. **SVG source files are stored LZ4-compressed** on disc and
 transparently decompressed when viewed or downloaded.
 
 ## Metadata (`metadata.json` / `metadata.toml`)
