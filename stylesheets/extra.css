@@ -389,6 +389,10 @@ body { font-family: var(--sans); -webkit-font-smoothing: antialiased; }
   box-shadow: 0 10px 26px color-mix(in oklab, var(--accent) 35%, transparent);
 }
 .cc-hero__cta--center { margin: 8px auto 56px; }
+.cc-hero__version {
+  text-align: center; margin: 4px 0 0;
+  font-size: 13px; color: var(--ink-2);
+}
 
 /* ---- "Built for…" audience band ---- */
 .cc-who {
