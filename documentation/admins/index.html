@@ -1,0 +1,1401 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="A domain-agnostic, self-hosted catalogue server — docs & showcase.">
+      
+      
+      
+      
+        <link rel="prev" href="../uploading/">
+      
+      
+        <link rel="next" href="../roadmap/">
+      
+      
+        
+      
+      
+      <link rel="icon" href="../../assets/logo.svg">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.6">
+    
+    
+      
+        <title>Admin documentation - CatalogueCanvas Docs</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/main.484c7ddc.min.css">
+      
+        
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.ab4e12ef.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+    
+    
+      <link rel="stylesheet" href="../../stylesheets/extra.css">
+    
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;700;800;900&family=Spectral:ital,wght@0,400;0,500;0,600;1,400;1,600&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet" />
+
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="catalog-light" data-md-color-primary="indigo" data-md-color-accent="indigo">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#admin-documentation" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../.." title="CatalogueCanvas Docs" class="md-header__button md-logo" aria-label="CatalogueCanvas Docs" data-md-component="logo">
+      
+  <img src="../../assets/logo.svg" alt="logo">
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            CatalogueCanvas Docs
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Admin documentation
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="catalog-light" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="Switch to dark mode"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m17.75 4.09-2.53 1.94.91 3.06-2.63-1.81-2.63 1.81.91-3.06-2.53-1.94L12.44 4l1.06-3 1.06 3zm3.5 6.91-1.64 1.25.59 1.98-1.7-1.17-1.7 1.17.59-1.98L15.75 11l2.06-.05L18.5 9l.69 1.95zm-2.28 4.95c.83-.08 1.72 1.1 1.19 1.85-.32.45-.66.87-1.08 1.27C15.17 23 8.84 23 4.94 19.07c-3.91-3.9-3.91-10.24 0-14.14.4-.4.82-.76 1.27-1.08.75-.53 1.93.36 1.85 1.19-.27 2.86.69 5.83 2.89 8.02a9.96 9.96 0 0 0 8.02 2.89m-1.64 2.02a12.08 12.08 0 0 1-7.8-3.47c-2.17-2.19-3.33-5-3.49-7.82-2.81 3.14-2.7 7.96.31 10.98 3.02 3.01 7.84 3.12 10.98.31"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="catalog-dark" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 7a5 5 0 0 1 5 5 5 5 0 0 1-5 5 5 5 0 0 1-5-5 5 5 0 0 1 5-5m0 2a3 3 0 0 0-3 3 3 3 0 0 0 3 3 3 3 0 0 0 3-3 3 3 0 0 0-3-3m0-7 2.39 3.42C13.65 5.15 12.84 5 12 5s-1.65.15-2.39.42zM3.34 7l4.16-.35A7.2 7.2 0 0 0 5.94 8.5c-.44.74-.69 1.5-.83 2.29zm.02 10 1.76-3.77a7.131 7.131 0 0 0 2.38 4.14zM20.65 7l-1.77 3.79a7.02 7.02 0 0 0-2.38-4.15zm-.01 10-4.14.36c.59-.51 1.12-1.14 1.54-1.86.42-.73.69-1.5.83-2.29zM12 22l-2.41-3.44c.74.27 1.55.44 2.41.44.82 0 1.63-.17 2.37-.44z"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+        <div class="md-search__suggest" data-md-component="search-suggest"></div>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/ToroRojo-code/CatalogueCanvas" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M173.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6m-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3m44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9M252.8 8C114.1 8 8 113.3 8 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C436.2 457.8 504 362.9 504 252 504 113.3 391.5 8 252.8 8M105.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1m-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7m32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1m-11.4-14.7c-1.6 1-1.6 3.6 0 5.9s4.3 3.3 5.6 2.3c1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2"/></svg>
+  </div>
+  <div class="md-source__repository">
+    ToroRojo-code/CatalogueCanvas
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../.." title="CatalogueCanvas Docs" class="md-nav__button md-logo" aria-label="CatalogueCanvas Docs" data-md-component="logo">
+      
+  <img src="../../assets/logo.svg" alt="logo">
+
+    </a>
+    CatalogueCanvas Docs
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/ToroRojo-code/CatalogueCanvas" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M173.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6m-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3m44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9M252.8 8C114.1 8 8 113.3 8 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C436.2 457.8 504 362.9 504 252 504 113.3 391.5 8 252.8 8M105.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1m-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7m32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1m-11.4-14.7c-1.6 1-1.6 3.6 0 5.9s4.3 3.3 5.6 2.3c1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2"/></svg>
+  </div>
+  <div class="md-source__repository">
+    ToroRojo-code/CatalogueCanvas
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../.." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Introduction
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Documentation
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_2">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Documentation
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../intro/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Introduction
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../ethos/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Ethos
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../uses/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Uses & for whom
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../install/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Install
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../user/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    User documentation
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../uploading/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Uploading items
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Admin documentation
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Admin documentation
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#access-model" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Access model
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#settings-overview" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Settings overview
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Settings overview">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#appearance" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Appearance
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#users" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Users
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#llm-defaults" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        LLM defaults
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#prompt-template" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Prompt template
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#libraries-multi-storage" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Libraries (multi-storage)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#backup-export" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Backup &amp; export
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#collections-and-portfolio-visibility-multi-user-mode" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Collections and portfolio visibility (multi-user mode)
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#llm-ai-descriptions-in-depth" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        LLM / AI descriptions in depth
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="LLM / AI descriptions in depth">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#llm-endpoint-allowlist-cc_llm_allowed_hosts" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        LLM endpoint allowlist (CC_LLM_ALLOWED_HOSTS)
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#findable-metadata-fair" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Findable metadata (FAIR)
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#how-items-are-stored-operator-view" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        How items are stored (operator view)
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#diagnostics" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Diagnostics
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#operations-checklist" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Operations checklist
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../roadmap/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Roadmap
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../glossary/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Glossary
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#access-model" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Access model
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#settings-overview" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Settings overview
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Settings overview">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#appearance" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Appearance
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#users" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Users
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#llm-defaults" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        LLM defaults
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#prompt-template" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Prompt template
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#libraries-multi-storage" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Libraries (multi-storage)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#backup-export" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Backup &amp; export
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#collections-and-portfolio-visibility-multi-user-mode" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Collections and portfolio visibility (multi-user mode)
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#llm-ai-descriptions-in-depth" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        LLM / AI descriptions in depth
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="LLM / AI descriptions in depth">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#llm-endpoint-allowlist-cc_llm_allowed_hosts" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        LLM endpoint allowlist (CC_LLM_ALLOWED_HOSTS)
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#findable-metadata-fair" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Findable metadata (FAIR)
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#how-items-are-stored-operator-view" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        How items are stored (operator view)
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#diagnostics" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Diagnostics
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#operations-checklist" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Operations checklist
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+  
+  
+
+
+<p class="kicker">Documentation</p>
+
+<h1 id="admin-documentation">Admin documentation<a class="headerlink" href="#admin-documentation" title="Permanent link">&para;</a></h1>
+<p class="lead">Configuration, storage, AI setup, backups, and operations.</p>
+
+<p>For everyday use (uploading, editing, portfolios), see <a href="../user/">User documentation</a>. For
+deployment, see <a href="../install/">Install</a>.</p>
+<h2 id="access-model">Access model<a class="headerlink" href="#access-model" title="Permanent link">&para;</a></h2>
+<p>CatalogueCanvas can run in single-admin or <strong>multi-user</strong> mode, secured by passwords and a
+session cookie.</p>
+<ul>
+<li><strong>Admin</strong> — full access: upload, edit, organise, configure, and publish. All management
+  screens require an authenticated admin session.</li>
+<li><strong>Reader</strong> <em>(multi-user mode)</em> — can view the whole catalogue and download files, but cannot
+  modify anything; all admin-only menus and controls are hidden.</li>
+<li><strong>Public visitor</strong> — no login; can only reach portfolios marked <strong>Public</strong>.</li>
+</ul>
+<p>When multi-user mode is <strong>on</strong>, users sign in with a <strong>username and password</strong>, and every
+user's password must be <strong>unique</strong>. When it is <strong>off</strong>, the original single-password admin login
+is used. The signed-in username is shown next to the <strong>Log out</strong> button. Admins manage accounts
+from the <strong>Users</strong> panel in Settings.</p>
+<p>Security notes:</p>
+<ul>
+<li>Login is <strong>rate-limited</strong>: 5 failed attempts from one address in 5 minutes blocks further tries.</li>
+<li>Passwords are hashed (argon2); sessions use a signed cookie.</li>
+<li>Sessions are <strong>server-tracked and revocable</strong>, and state-changing requests are protected
+  against CSRF with a double-submit token.</li>
+<li>The session signing key is generated automatically on first start and persisted at
+  <code>&lt;CC_DATA_DIR&gt;/cc_secret_key.txt</code> — no manual setup required.</li>
+<li>Set a strong <code>CC_ADMIN_PASSWORD</code> in production (and a distinct password for every account in
+  multi-user mode).</li>
+</ul>
+<h2 id="settings-overview">Settings overview<a class="headerlink" href="#settings-overview" title="Permanent link">&para;</a></h2>
+<p>The <strong>Settings</strong> page groups: Appearance, Users, LLM defaults, Prompt template, Libraries, and Backup &amp; export.</p>
+<h3 id="appearance">Appearance<a class="headerlink" href="#appearance" title="Permanent link">&para;</a></h3>
+<p>Theme (light/dark), accent colour, navigation layout (top/side), density (airy/balanced/dense),
+and enable/disable <strong>Favourites</strong>.</p>
+<figure>
+<p><img alt="Appearance settings" src="../../assets/sc_Appearance_CatalogueCanvas.png" />
+  </p>
+<figcaption>Settings → Appearance</figcaption>
+</figure>
+<h3 id="users">Users<a class="headerlink" href="#users" title="Permanent link">&para;</a></h3>
+<p>Enable <strong>multi-user mode</strong> and manage accounts. Each user has a username, a password, and a
+role (Admin or Reader). Every user's password must be unique. The <strong>last remaining admin</strong>
+cannot be demoted or deleted. With multi-user mode off, the instance uses the single-password
+admin login.</p>
+<figure>
+<p><img alt="Multi-user access settings" src="../../assets/sc_MultiUser_CatalogueCanvas.png" />
+  </p>
+<figcaption>Settings → Users (multi-user mode on, with Admin and Reader accounts)</figcaption>
+</figure>
+<h3 id="llm-defaults">LLM defaults<a class="headerlink" href="#llm-defaults" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th>Field</th>
+<th>Meaning</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>API URL</td>
+<td>OpenAI-compatible chat-completions endpoint</td>
+</tr>
+<tr>
+<td>Model</td>
+<td>Model name to call</td>
+</tr>
+<tr>
+<td>Item type</td>
+<td>What the items are (e.g. "image", "artwork")</td>
+</tr>
+<tr>
+<td>Summary focus</td>
+<td>What the description should emphasise</td>
+</tr>
+<tr>
+<td>Bullet points</td>
+<td>How many bullets to generate</td>
+</tr>
+<tr>
+<td>Max words per bullet</td>
+<td>Length cap per bullet</td>
+</tr>
+<tr>
+<td>Generate description (LLM)</td>
+<td>Whether the item editor offers a generate button</td>
+</tr>
+</tbody>
+</table>
+<figure>
+<p><img alt="LLM defaults settings" src="../../assets/sc_LLM_CatalogueCanvas.png" />
+  </p>
+<figcaption>Settings → LLM defaults</figcaption>
+</figure>
+<h3 id="prompt-template">Prompt template<a class="headerlink" href="#prompt-template" title="Permanent link">&para;</a></h3>
+<p>Edit the raw <strong>TOML</strong> prompt used to build the LLM request. Placeholders:
+<code>{item_type}</code>, <code>{summary_focus}</code>, <code>{bullet_count}</code>, <code>{bullet_max_words}</code>. Includes a
+<strong>reset-to-default</strong> option.</p>
+<figure>
+<p><img alt="Prompt template settings" src="../../assets/sc_Prompt_CatalogueCanvas.png" />
+  </p>
+<figcaption>Settings → Prompt template</figcaption>
+</figure>
+<h3 id="libraries-multi-storage">Libraries (multi-storage)<a class="headerlink" href="#libraries-multi-storage" title="Permanent link">&para;</a></h3>
+<ul>
+<li>Add libraries pointing at different <strong>writable directories</strong> (e.g. a second disc).<ul>
+<li>Paths must already be <strong>mounted into the container</strong> and writable.</li>
+</ul>
+</li>
+<li>Set any library as the <strong>default</strong> for new uploads.</li>
+<li>Constraints: a library's <strong>path can't change</strong> once it holds items; a library <strong>can't be deleted</strong>
+  while it contains items or while it is the default.</li>
+</ul>
+<figure>
+<p><img alt="Libraries settings" src="../../assets/sc_Libraries_CatalogueCanvas.png" />
+  </p>
+<figcaption>Settings → Libraries</figcaption>
+</figure>
+<h3 id="backup-export">Backup &amp; export<a class="headerlink" href="#backup-export" title="Permanent link">&para;</a></h3>
+<ul>
+<li><strong>Database backup</strong> — a single SQLite snapshot.</li>
+<li><strong>Full backup</strong> — a ZIP of the database <strong>plus every stored asset</strong> across all libraries.</li>
+<li>Live stats shown: total items, total collections, items missing a preview.</li>
+</ul>
+<div class="admonition warning">
+<p class="admonition-title">Exports are unencrypted</p>
+<p>Database and full-data exports are admin-only but unencrypted. Download and store them over a trusted channel.</p>
+</div>
+<figure>
+<p><img alt="Backup and export settings" src="../../assets/sc_Backup_CatalogueCanvas.png" />
+  </p>
+<figcaption>Settings → Backup &amp; export</figcaption>
+</figure>
+<h2 id="collections-and-portfolio-visibility-multi-user-mode">Collections and portfolio visibility (multi-user mode)<a class="headerlink" href="#collections-and-portfolio-visibility-multi-user-mode" title="Permanent link">&para;</a></h2>
+<p>In multi-user mode each collection and portfolio has a <strong>visibility</strong> setting. <strong>Admin only</strong> (the default) hides the item from reader accounts entirely — it won't appear in lists, and direct URLs return "not found". <strong>Readers</strong> makes it visible to reader accounts as well.</p>
+<p>After an upgrade, all existing collections and portfolios land on admin-only. Admins need to change them to <strong>Readers</strong> explicitly. Public portfolios at <code>/p/&lt;slug&gt;</code> are unaffected by this setting.</p>
+<h2 id="llm-ai-descriptions-in-depth">LLM / AI descriptions in depth<a class="headerlink" href="#llm-ai-descriptions-in-depth" title="Permanent link">&para;</a></h2>
+<ul>
+<li>Works with any <strong>OpenAI-compatible vision LLM</strong> — local (LM Studio, Ollama) or hosted.</li>
+<li>An <strong>API key may be supplied per request</strong> and is used <strong>only for that request — never stored</strong>.
+  This also applies to <strong>batch generation</strong>: an optional API-key field is available when
+  generating descriptions for many selected items at once.</li>
+<li>The API URL is <strong>auto-completed</strong> — enter just the host and port
+  (e.g. <code>http://host.docker.internal:1234</code>) and <code>/v1/chat/completions</code> is appended; a full URL
+  also works.</li>
+<li><strong>Reasoning is stripped</strong> from results: <code>&lt;think&gt;</code> blocks and reasoning preambles from
+  "thinking" models are removed, and the prompt requests a clean JSON-only response, so
+  descriptions contain only the summary and bullet points.</li>
+<li>The request <strong>timeout is 90 seconds</strong>, to accommodate slower local models.</li>
+<li>Failures report the <strong>actual cause</strong> (connection, HTTP error, non-JSON, or no choices
+  returned) rather than an opaque error.</li>
+<li>The <code>api_url</code> is validated <strong>at settings-save time</strong> — an invalid or non-allowlisted URL is rejected immediately with an error rather than failing silently at describe time.</li>
+</ul>
+<h3 id="llm-endpoint-allowlist-cc_llm_allowed_hosts">LLM endpoint allowlist (<code>CC_LLM_ALLOWED_HOSTS</code>)<a class="headerlink" href="#llm-endpoint-allowlist-cc_llm_allowed_hosts" title="Permanent link">&para;</a></h3>
+<p><code>CC_LLM_ALLOWED_HOSTS</code> is optional. When set, it takes a comma-separated list of hostnames or IPs; any <code>api_url</code> whose host isn't on the list is rejected when you save settings. This stops the Describe feature from being redirected at internal services you didn't intend.</p>
+<p>Self-hosted servers on your LAN need to be listed explicitly, e.g. <code>CC_LLM_ALLOWED_HOSTS=ollama.lan,192.168.1.50</code>. Leave it unset for no restriction — the previous behaviour.</p>
+<p>See <a href="../install/#configuration">Configuration</a> for all available environment variables.</p>
+<h2 id="findable-metadata-fair">Findable metadata (FAIR)<a class="headerlink" href="#findable-metadata-fair" title="Permanent link">&para;</a></h2>
+<ul>
+<li><strong>Full-text search</strong> covers every item's title, description/note, tags, and the full contents
+  of its uploaded <code>metadata.json</code> / <code>metadata.toml</code>. Results are ranked by relevance, with prefix
+  matching. Search is handled on the server.</li>
+<li>Each item exposes a <strong>machine-readable metadata record</strong> in <strong>JSON-LD</strong> (schema.org
+  <code>VisualArtwork</code> / Dublin Core) at <code>/api/items/{id}/metadata</code>, linked from the item page. The
+  record embeds the item's persistent ID as <code>@id</code> / <code>identifier</code>, maps title, description, and
+  tags to standard terms, and carries the uploaded metadata as additional properties — so items
+  are <strong>findable and harvestable by external tools</strong> (the "F" in FAIR).</li>
+</ul>
+<h2 id="how-items-are-stored-operator-view">How items are stored (operator view)<a class="headerlink" href="#how-items-are-stored-operator-view" title="Permanent link">&para;</a></h2>
+<ul>
+<li>Each item lives under its library at <code>items/&lt;item-id&gt;/</code> with a <code>preview.webp</code> and an <code>other/</code> folder.</li>
+<li><strong>SVGs are LZ4-compressed</strong> on disc. Compressed files are served <strong>exactly as stored, as a
+  download</strong> — never decompressed or rendered in the browser. The WebP preview generated at
+  ingestion remains the display image.</li>
+<li>Item IDs are unique <code>word-NNN</code> strings, checked against the database to avoid collisions.</li>
+<li>Items are <strong>deduplicated by content hash</strong> at ingest.</li>
+<li>Before extracting a ZIP, ingestion checks available disc space and enforces a per-file size cap as files are decompressed. An archive that would breach the limit is rejected with a clear error; normal uploads are not affected.</li>
+</ul>
+<h2 id="diagnostics">Diagnostics<a class="headerlink" href="#diagnostics" title="Permanent link">&para;</a></h2>
+<p>Admins can download a <strong>redacted Markdown diagnostic report</strong> from Settings (or generate it via
+a CLI script) to attach to a GitHub issue. It covers:</p>
+<ul>
+<li>Versions and <strong>build provenance</strong> (git SHA and build date).</li>
+<li><strong>Masked</strong> configuration (no secrets).</li>
+<li>Disk and storage usage.</li>
+<li>LLM configuration plus a <strong>live endpoint reachability probe</strong>.</li>
+<li>Database counts.</li>
+<li>A <strong>storage-integrity check</strong> (missing or orphaned files).</li>
+</ul>
+<h2 id="operations-checklist">Operations checklist<a class="headerlink" href="#operations-checklist" title="Permanent link">&para;</a></h2>
+<ul class="task-list">
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> Strong <code>CC_ADMIN_PASSWORD</code> set (and a distinct reader password in multi-user mode)</li>
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> Data volume sized for expected assets (it also holds the auto-generated session key)</li>
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> Library paths mounted and writable</li>
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> Regular backup routine in place</li>
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> <code>CC_SITE_TITLE</code> / <code>CC_SITE_AUTHOR</code> set for public portfolios</li>
+</ul>
+
+
+
+
+
+
+
+  
+  
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  Back to top
+</button>
+        
+      </main>
+      
+         
+
+<nav
+    class="md-footer__inner md-grid"
+    aria-label="Footer"
+    
+>
+     
+    <a
+        href="../uploading/"
+        class="md-footer__link md-footer__link--prev"
+        aria-label="Previous: Uploading items"
+    >
+        <div class="md-footer__button md-icon">
+            
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+        </div>
+        <div class="md-footer__title">
+            <span class="md-footer__direction">Previous</span>
+            <div class="md-ellipsis">Uploading items</div>
+        </div>
+    </a>
+      
+    <a
+        href="../roadmap/"
+        class="md-footer__link md-footer__link--next"
+        aria-label="Next: Roadmap"
+    >
+        <div class="md-footer__title">
+            <span class="md-footer__direction">Next</span>
+            <div class="md-ellipsis">Roadmap</div>
+        </div>
+        <div class="md-footer__button md-icon">
+             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M4 11v2h12l-5.5 5.5 1.42 1.42L19.84 12l-7.92-7.92L10.5 5.5 16 11z"/></svg>
+        </div>
+    </a>
+    
+</nav>
+ 
+
+<footer class="md-footer cc-footer">
+    <div class="md-grid cc-footer__inner">
+        <div class="cc-footer__brand">
+            <a
+                class="cc-footer__mark"
+                href="../.."
+                aria-label="CatalogueCanvas"
+            >
+                <img
+                    class="cc-footer__logo"
+                    src="../../assets/logotext.png"
+                    alt="CatalogueCanvas"
+                />
+            </a>
+            <p class="cc-footer__tag">
+                A domain-agnostic, self-hosted catalogue server. Your catalogue,
+                your disk, your data.
+            </p>
+            <p class="cc-footer__tag">Designed and created by ToroRojo.</p>
+        </div>
+
+        <nav class="cc-footer__cols" aria-label="Footer">
+            <div class="cc-footer__col">
+                <p class="cc-footer__lbl">Showcase</p>
+                <a href="../ethos/">Ethos</a>
+                <a href="../intro/">Introduction</a>
+                <a href="../uses/">Uses &amp; for whom</a>
+            </div>
+            <div class="cc-footer__col">
+                <p class="cc-footer__lbl">Docs</p>
+                <a href="../install/">Install</a>
+                <a href="../user/">User docs</a>
+                <a href="./">Admin docs</a>
+                <a href="../glossary/">Glossary</a>
+            </div>
+            <div class="cc-footer__col">
+                <p class="cc-footer__lbl">Project</p>
+                <a href="../roadmap/">Roadmap</a>
+                
+                <a href="https://github.com/ToroRojo-code/CatalogueCanvas" target="_blank" rel="noopener"
+                    >GitHub</a
+                >
+                <a
+                    href="https://github.com/ToroRojo-code/CatalogueCanvas/issues"
+                    target="_blank"
+                    rel="noopener"
+                    >Report an issue</a
+                >
+                
+            </div>
+        </nav>
+    </div>
+
+    <div class="cc-footer__meta md-grid">
+        <div class="md-copyright">
+  
+    <div class="md-copyright__highlight">
+      CatalogueCanvas — open source under the GNU AGPL v3.0.
+
+    </div>
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div> 
+<div class="md-social">
+  
+</div>
+    </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "../..", "features": ["navigation.sections", "navigation.top", "navigation.footer", "navigation.instant", "navigation.tracking", "toc.follow", "content.code.copy", "search.suggest", "search.highlight"], "search": "../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+      <script src="../../assets/javascripts/bundle.79ae519e.min.js"></script>
+      
+    
+  </body>
+</html>

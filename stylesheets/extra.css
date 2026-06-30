@@ -1,0 +1,499 @@
+/* ============================================================================
+   CatalogueCanvas Docs — design tokens & component styles
+   Ported from the Claude Design source "CatalogCanvas Docs.html":
+   IBM Plex Mono kickers, Spectral serif display, Archivo sans, oklch tokens,
+   vermilion accent, mode/accent presets. Mapped onto MkDocs Material variables.
+   ============================================================================ */
+
+/* ---- Design palette (light) ---- */
+:root,
+[data-md-color-scheme="catalog-light"] {
+  --bg: oklch(0.97 0.004 95);
+  --panel: oklch(1 0 0);
+  --panel-2: oklch(0.945 0.004 95);
+  --border: oklch(0.88 0.005 95);
+  --border-2: oklch(0.82 0.005 95);
+  --ink: oklch(0.2 0.004 95);
+  --ink-2: oklch(0.46 0.004 95);
+  --ink-3: oklch(0.62 0.004 95);
+  --accent: oklch(0.6 0.21 30);
+  --accent-wash: color-mix(in oklab, var(--accent) 12%, transparent);
+  --tip: oklch(0.55 0.11 158);
+  --warn: oklch(0.62 0.14 65);
+  --mono: 'IBM Plex Mono', ui-monospace, monospace;
+  --sans: 'Archivo', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  --serif: 'Spectral', Georgia, serif;
+  color-scheme: light;
+}
+
+/* ---- Design palette (dark) ---- */
+[data-md-color-scheme="catalog-dark"] {
+  --bg: oklch(0.17 0.003 95);
+  --panel: oklch(0.205 0.003 95);
+  --panel-2: oklch(0.235 0.003 95);
+  --border: oklch(0.31 0.004 95);
+  --border-2: oklch(0.38 0.005 95);
+  --ink: oklch(0.96 0.003 95);
+  --ink-2: oklch(0.72 0.004 95);
+  --ink-3: oklch(0.55 0.004 95);
+  --accent: oklch(0.6 0.21 30);
+  --accent-wash: color-mix(in oklab, var(--accent) 12%, transparent);
+  --tip: oklch(0.68 0.12 162);
+  --warn: oklch(0.74 0.13 72);
+  color-scheme: dark;
+}
+
+/* ---- Wire design tokens into Material's variables ---- */
+[data-md-color-scheme="catalog-light"],
+[data-md-color-scheme="catalog-dark"] {
+  --md-primary-fg-color: var(--accent);
+  --md-accent-fg-color: var(--accent);
+  --md-default-bg-color: var(--bg);
+  --md-default-fg-color: var(--ink);
+  --md-default-fg-color--light: var(--ink-2);
+  --md-default-fg-color--lighter: var(--ink-3);
+  --md-typeset-color: var(--ink-2);
+  --md-typeset-a-color: var(--accent);
+  --md-code-bg-color: var(--panel-2);
+  --md-code-fg-color: var(--ink);
+  --md-footer-bg-color: var(--panel);
+  --md-footer-bg-color--dark: var(--panel-2);
+
+  --md-text-font: "Archivo";
+  --md-code-font: "IBM Plex Mono";
+}
+
+/* ============================ TYPOGRAPHY ============================ */
+body { font-family: var(--sans); -webkit-font-smoothing: antialiased; }
+
+.md-typeset { font-size: 0.82rem; line-height: 1.6; }
+.md-typeset p { color: var(--ink-2); max-width: 64ch; }
+.md-typeset p strong, .md-typeset li strong { color: var(--ink); font-weight: 600; }
+
+/* Page H1 → Spectral serif display */
+.md-typeset h1 {
+  font-family: var(--serif); font-weight: 600;
+  font-size: clamp(32px, 4.6vw, 50px); line-height: 1.02;
+  letter-spacing: -0.015em; color: var(--ink);
+  margin: 0 0 18px; text-wrap: balance;
+}
+.md-typeset h2 {
+  font-family: var(--sans); font-weight: 700; font-size: 23px;
+  letter-spacing: -0.015em; color: var(--ink);
+  margin: 52px 0 16px; padding-bottom: 11px; border-bottom: 1px solid var(--border);
+}
+.md-typeset h3 {
+  font-family: var(--sans); font-weight: 700; font-size: 16.5px;
+  letter-spacing: -0.01em; color: var(--ink); margin: 32px 0 10px;
+}
+
+/* Kicker — the first paragraph in a page acting as eyebrow, opt-in via .kicker */
+.md-typeset .kicker {
+  font-family: var(--mono); font-size: 11px; letter-spacing: 0.18em;
+  text-transform: uppercase; color: var(--accent); margin: 0 0 14px;
+}
+
+/* Lead paragraph */
+.md-typeset .lead {
+  font-size: 18px; line-height: 1.55; color: var(--ink-2);
+  margin: 0 0 22px; max-width: 62ch;
+}
+.md-typeset .lead strong { color: var(--ink); font-weight: 600; }
+
+/* Inline code & links */
+.md-typeset code {
+  font-family: var(--mono); background: var(--panel-2);
+  border: 1px solid var(--border); border-radius: 5px; color: var(--ink);
+}
+.md-typeset a { color: var(--accent); }
+
+/* ============================ TOP BAR ============================ */
+.md-header {
+  background: color-mix(in oklab, var(--bg) 85%, transparent);
+  backdrop-filter: saturate(1.4) blur(10px);
+  color: var(--ink); border-bottom: 1px solid var(--border);
+  box-shadow: none;
+}
+.md-header__title { font-weight: 700; letter-spacing: -0.01em; }
+
+/* Brand logo (top bar) — SVG C-mark; swap to the dark-mode variant in the
+   dark scheme. The <img src> set by theme.logo is the light SVG. */
+.md-header__button.md-logo { padding: 0; margin-right: 4px; }
+.md-header__button.md-logo img,
+.md-header__button.md-logo svg { height: 1.6rem; width: auto; }
+[data-md-color-scheme="catalog-dark"] .md-header__button.md-logo img {
+  content: url("../assets/logo_dark.svg");
+}
+.md-tabs { background: transparent; color: var(--ink-2); }
+
+/* GitHub source: keep the icon, hide the repo name/URL text */
+.md-header__source .md-source__repository { display: none; }
+.md-header__source { width: auto; }
+
+/* ============================ SIDEBAR NAV ============================ */
+.md-nav { font-size: 13.5px; }
+.md-nav__title {
+  font-family: var(--mono); font-size: 10px; text-transform: uppercase;
+  letter-spacing: 0.16em; color: var(--ink-3);
+}
+.md-nav__link {
+  color: var(--ink-2); font-weight: 500;
+  border-left: 2px solid transparent; padding-left: 10px;
+  transition: color .15s, border-color .15s, background .15s;
+}
+.md-nav__link:hover { color: var(--ink); }
+.md-nav__link--active,
+.md-nav__item .md-nav__link--active {
+  color: var(--accent); font-weight: 600;
+  border-left-color: var(--accent);
+  background: var(--accent-wash);
+}
+
+/* Right "On this page" TOC rail */
+.md-nav--secondary .md-nav__link { border-left: 2px solid var(--border); }
+.md-nav--secondary .md-nav__link--active { border-left-color: var(--accent); }
+
+/* ============================ ADMONITIONS ============================ */
+.md-typeset .admonition,
+.md-typeset details {
+  border: 1px solid color-mix(in oklab, var(--accent) 24%, var(--border));
+  border-left: 3px solid var(--accent);
+  border-radius: 9px;
+  background: color-mix(in oklab, var(--accent) 7%, var(--panel));
+  font-size: 14.5px; box-shadow: none;
+}
+.md-typeset .admonition-title {
+  font-family: var(--mono); font-size: 10.5px; text-transform: uppercase;
+  letter-spacing: 0.14em; color: var(--accent);
+  background: transparent; border: 0; margin: 0; padding: 14px 18px 0;
+}
+.md-typeset .admonition-title::before { background-color: var(--accent); }
+.md-typeset .admonition > p { padding: 7px 18px 14px; margin: 0; color: var(--ink-2); max-width: none; }
+.md-typeset details > p { max-width: none; }
+
+.md-typeset .admonition.tip {
+  --tipc: var(--tip);
+  border-color: color-mix(in oklab, var(--tip) 24%, var(--border));
+  border-left-color: var(--tip);
+  background: color-mix(in oklab, var(--tip) 7%, var(--panel));
+}
+.md-typeset .admonition.tip > .admonition-title { color: var(--tip); }
+.md-typeset .admonition.tip > .admonition-title::before { background-color: var(--tip); }
+
+.md-typeset .admonition.warning {
+  border-color: color-mix(in oklab, var(--warn) 24%, var(--border));
+  border-left-color: var(--warn);
+  background: color-mix(in oklab, var(--warn) 7%, var(--panel));
+}
+.md-typeset .admonition.warning > .admonition-title { color: var(--warn); }
+.md-typeset .admonition.warning > .admonition-title::before { background-color: var(--warn); }
+
+/* ============================ STEPS (ordered list) ============================ */
+.md-typeset ol.steps { counter-reset: step; list-style: none; margin: 4px 0 20px; padding: 0; }
+.md-typeset ol.steps li { position: relative; padding: 2px 0 18px 44px; color: var(--ink-2); max-width: 62ch; }
+.md-typeset ol.steps li::before {
+  counter-increment: step; content: counter(step, decimal-leading-zero);
+  position: absolute; left: 0; top: 0; width: 28px; height: 28px;
+  display: grid; place-items: center; font-family: var(--mono); font-size: 11px; font-weight: 500;
+  color: var(--accent); background: var(--accent-wash);
+  border: 1px solid color-mix(in oklab, var(--accent) 30%, var(--border)); border-radius: 7px;
+}
+.md-typeset ol.steps li:not(:last-child)::after {
+  content: ""; position: absolute; left: 13.5px; top: 30px; bottom: 4px; width: 1px; background: var(--border);
+}
+
+/* ============================ TABLES ============================ */
+.md-typeset table:not([class]) {
+  border: 0; border-radius: 0; font-size: 14px; box-shadow: none;
+}
+.md-typeset table:not([class]) th {
+  font-family: var(--mono); font-size: 10.5px; text-transform: uppercase;
+  letter-spacing: 0.1em; color: var(--ink-3); font-weight: 500;
+  background: transparent; border-bottom: 1px solid var(--border-2);
+}
+.md-typeset table:not([class]) td {
+  border-bottom: 1px solid var(--border); vertical-align: top; color: var(--ink-2);
+}
+.md-typeset table:not([class]) tr:hover {
+  background: color-mix(in oklab, var(--accent) 4%, transparent);
+}
+.md-typeset table:not([class]) td strong { color: var(--ink); }
+
+/* ============================ CODE BLOCKS ============================ */
+.md-typeset pre > code { font-family: var(--mono); font-size: 12.5px; line-height: 1.75; }
+.md-typeset .highlight,
+.md-typeset pre {
+  border: 1px solid var(--border); border-radius: 10px; background: var(--panel);
+}
+
+/* ============================ KEYBOARD KEYS ============================ */
+.md-typeset kbd, .md-typeset .keys kbd {
+  font-family: var(--mono); font-size: 11px; font-weight: 500; color: var(--ink-2);
+  background: var(--panel); border: 1px solid var(--border-2); border-bottom-width: 2px;
+  border-radius: 5px; padding: 2px 6px; box-shadow: none;
+}
+
+/* ============================ IMAGE PLATES ============================ */
+.md-typeset figure {
+  margin: 22px 0; border: 1px solid var(--border); border-radius: 11px;
+  overflow: hidden; background: var(--panel);
+}
+.md-typeset figure img { display: block; width: 100%; }
+.md-typeset figure figcaption {
+  font-family: var(--mono); font-size: 11px; color: var(--ink-3);
+  padding: 10px 14px; border-top: 1px solid var(--border); margin: 0;
+}
+
+/* Striped placeholder plate (use <div class="plate-ph">caption</div>) */
+.md-typeset .plate-ph {
+  aspect-ratio: 16 / 7; display: grid; place-items: center; margin: 22px 0;
+  border: 1px solid var(--border); border-radius: 11px;
+  background-color: var(--panel-2);
+  background-image: repeating-linear-gradient(45deg,
+    color-mix(in oklab, var(--ink) 5%, transparent) 0 11px, transparent 11px 22px);
+}
+.md-typeset .plate-ph::before {
+  content: attr(data-label); font-family: var(--mono); font-size: 11px; color: var(--ink-3);
+  letter-spacing: 0.04em; background: var(--panel); padding: 5px 11px;
+  border: 1px solid var(--border); border-radius: 6px;
+}
+
+/* ============================ FOOTER PAGER (prev/next) ============================ */
+.md-footer__inner { border-top: 1px solid var(--border); }
+.md-footer__link { opacity: 1; }
+.md-footer__title { font-family: var(--serif); }
+.md-footer__direction { font-family: var(--mono); font-size: 10px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--ink-3); opacity: 1; }
+
+/* ============================ BRAND FOOTER ============================ */
+.cc-footer { background: var(--panel); color: var(--ink-2); border-top: 1px solid var(--border); }
+.cc-footer__inner {
+  display: grid; grid-template-columns: minmax(0, 1.4fr) minmax(0, 2fr);
+  gap: clamp(28px, 5vw, 72px); align-items: start;
+  padding: 48px clamp(16px, 3vw, 26px) 36px;
+}
+
+.cc-footer__mark { display: inline-flex; align-items: center; text-decoration: none; }
+.cc-footer__logo { height: 44px; width: auto; display: block; }
+[data-md-color-scheme="catalog-dark"] .cc-footer__logo { content: url("../assets/logotext_dark.png"); }
+.cc-footer__tag { margin: 14px 0 0; font-size: 13.5px; color: var(--ink-3); max-width: 38ch; line-height: 1.55; }
+
+.cc-footer__cols { display: grid; grid-template-columns: repeat(3, 1fr); gap: 28px; }
+.cc-footer__col { display: flex; flex-direction: column; gap: 9px; }
+.cc-footer__lbl {
+  font-family: var(--mono); font-size: 10px; text-transform: uppercase; letter-spacing: 0.16em;
+  color: var(--ink-3); margin: 0 0 4px;
+}
+.cc-footer__col a {
+  text-decoration: none; color: var(--ink-2); font-size: 13.5px; font-weight: 500;
+  transition: color .15s;
+}
+.cc-footer__col a:hover { color: var(--accent); }
+
+.cc-footer__meta {
+  display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 12px;
+  padding: 16px clamp(16px, 3vw, 26px); border-top: 1px solid var(--border);
+}
+.cc-footer__meta .md-copyright { font-family: var(--mono); font-size: 11px; color: var(--ink-3); letter-spacing: 0.02em; margin: 0; width: auto; }
+.cc-footer__meta .md-copyright__highlight { color: var(--ink-3); }
+.cc-footer__meta .md-copyright a { color: var(--ink-2); }
+.cc-footer__meta .md-copyright a:hover { color: var(--accent); }
+
+@media (max-width: 760px) {
+  .cc-footer__inner { grid-template-columns: 1fr; gap: 32px; }
+  .cc-footer__cols { grid-template-columns: repeat(2, 1fr); }
+}
+
+/* ============================================================================
+   LANDING / INTRODUCTION PAGE — hero, screenshot, features, link rows
+   Adapted to Material's DOM. Consumes existing tokens
+   (--accent / --tip / --warn / --panel / --border / --bg / --ink*).
+   ============================================================================ */
+
+/* Give the landing room: drop the typeset reading max-width on this page */
+.md-typeset .cc-hero,
+.md-typeset .cc-shot,
+.md-typeset .cc-features,
+.md-typeset .cc-who,
+.md-typeset .cc-links { max-width: none; }
+
+/* ---- Hero ---- */
+.cc-hero {
+  position: relative;
+  text-align: center;
+  max-width: 46rem;
+  margin: 8px auto 8px;
+  padding: clamp(28px, 5vw, 56px) 16px 12px;
+}
+/* soft diagonal wash behind the hero (mockup background) */
+.cc-hero::before {
+  content: "";
+  position: absolute; inset: -8% -20% 0;
+  z-index: -1;
+  background:
+    radial-gradient(60% 70% at 50% 0%,
+      color-mix(in oklab, var(--accent) 9%, transparent), transparent 70%),
+    linear-gradient(135deg,
+      color-mix(in oklab, var(--panel-2) 60%, transparent),
+      transparent 55%,
+      color-mix(in oklab, var(--panel-2) 40%, transparent));
+}
+/* The markdown processor wraps the logo <img> in a <p>; centre that wrapper
+   and drop the typeset reading width so hero elements honour text-align. */
+.md-typeset .cc-hero p { max-width: none; text-align: center; }
+.cc-hero p:has(.cc-hero__wordmark) { margin-bottom: 18px; }
+.cc-hero__wordmark {
+  width: auto;
+  max-width: min(100%, 34rem);
+  height: auto;
+  margin: 0 auto;
+  display: block;
+}
+.md-typeset .cc-hero .kicker { margin-bottom: 12px; text-align: center; }
+.md-typeset .cc-hero h1 {
+  margin: 0 auto 16px;
+  max-width: 18ch;
+  font-size: clamp(34px, 5.2vw, 56px);
+}
+.cc-hero__tagline {
+  font-size: 17px; line-height: 1.6; color: var(--ink-2);
+  margin: 0 auto; max-width: 38rem;
+}
+
+/* ---- Hero CTA buttons ---- */
+.cc-hero__cta {
+  display: flex; flex-wrap: wrap; gap: 12px;
+  justify-content: center; margin: 26px 0 4px;
+}
+.md-typeset a.cc-btn {
+  display: inline-flex; align-items: center; gap: 8px;
+  padding: 11px 22px;
+  border-radius: 10px;
+  border: 1px solid var(--border-2);
+  background: var(--panel);
+  color: var(--ink);
+  font-weight: 600; font-size: 14.5px; letter-spacing: -0.01em;
+  text-decoration: none;
+  transition: transform .16s, box-shadow .16s, border-color .16s, background .16s;
+}
+.md-typeset a.cc-btn:hover {
+  transform: translateY(-2px);
+  border-color: color-mix(in oklab, var(--ink) 30%, var(--border-2));
+  box-shadow: 0 8px 22px color-mix(in oklab, var(--ink) 9%, transparent);
+}
+.md-typeset a.cc-btn--primary {
+  background: var(--accent);
+  border-color: var(--accent);
+  color: oklch(0.99 0 0);
+}
+.md-typeset a.cc-btn--primary:hover {
+  box-shadow: 0 10px 26px color-mix(in oklab, var(--accent) 35%, transparent);
+}
+.cc-hero__cta--center { margin: 8px auto 56px; }
+
+/* ---- "Built for…" audience band ---- */
+.cc-who {
+  max-width: 46rem;
+  margin: 0 auto 44px;
+  text-align: center;
+  padding: 0 16px;
+}
+.md-typeset .cc-who h2 { margin: 0 auto 14px; font-size: clamp(22px, 3vw, 30px); }
+.md-typeset .cc-who p {
+  margin: 0 auto 22px; max-width: 42rem;
+  font-size: 16px; line-height: 1.6; color: var(--ink-2);
+}
+
+/* ---- Product screenshot ---- */
+.md-typeset figure.cc-shot {
+  max-width: 60rem;
+  margin: 8px auto 56px;
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  overflow: hidden;
+  background: var(--panel);
+  box-shadow: 0 24px 60px color-mix(in oklab, var(--ink) 10%, transparent);
+}
+.md-typeset figure.cc-shot img { display: block; width: 100%; }
+
+/* ---- Feature grid ---- */
+.cc-features {
+  max-width: 60rem;
+  margin: 0 auto 52px;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 16px;
+}
+.cc-feature {
+  padding: 22px 22px 20px;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  background: var(--panel);
+}
+.md-typeset .cc-feature .cc-feature__icon {
+  font-size: 26px; color: var(--accent); line-height: 1;
+}
+.md-typeset .cc-feature .cc-feature__icon svg { width: 26px; height: 26px; fill: var(--accent); }
+.cc-features .cc-feature:nth-child(4n+2) .cc-feature__icon,
+.cc-features .cc-feature:nth-child(4n+2) .cc-feature__icon svg { color: var(--tip); fill: var(--tip); }
+.cc-features .cc-feature:nth-child(4n+3) .cc-feature__icon,
+.cc-features .cc-feature:nth-child(4n+3) .cc-feature__icon svg { color: var(--warn); fill: var(--warn); }
+.md-typeset .cc-feature h3 { margin: 12px 0 6px; font-size: 16px; }
+.md-typeset .cc-feature p { margin: 0; font-size: 14px; line-height: 1.55; max-width: none; }
+
+/* ---- Link rows ---- */
+.cc-links {
+  max-width: 38rem;
+  margin: 0 auto 56px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+.md-typeset .cc-links p { margin: 0; max-width: none; }
+
+.md-typeset .cc-links a.cc-link {
+  --c: var(--accent);
+  display: grid;
+  grid-template-columns: 46px minmax(0, 1fr);
+  align-items: center;
+  gap: 16px;
+  padding: 15px 18px;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  background: var(--panel);
+  text-decoration: none;
+  color: var(--ink);
+  transition: border-color .16s, transform .16s, box-shadow .16s;
+}
+.cc-links a.cc-link:nth-of-type(3n+2) { --c: var(--tip); }
+.cc-links a.cc-link:nth-of-type(3n+3) { --c: var(--warn); }
+.md-typeset .cc-links a.cc-link:hover {
+  border-color: color-mix(in oklab, var(--c) 55%, var(--border));
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px color-mix(in oklab, var(--ink) 8%, transparent);
+}
+
+/* icon chip (Material renders the emoji icon as a leading <span class="twemoji">) */
+.cc-links a.cc-link .twemoji {
+  width: 46px; height: 46px;
+  display: grid; place-items: center;
+  border-radius: 10px;
+  color: var(--c);
+  background: color-mix(in oklab, var(--c) 12%, transparent);
+  border: 1px solid color-mix(in oklab, var(--c) 26%, transparent);
+}
+.cc-links a.cc-link .twemoji svg { width: 20px; height: 20px; fill: var(--c); }
+
+/* label + mono sublabel */
+.cc-links a.cc-link strong {
+  display: block;
+  font-weight: 600; font-size: 15.5px; letter-spacing: -0.01em;
+  color: var(--ink);
+}
+.cc-links a.cc-link small {
+  display: block;
+  font-family: var(--mono);
+  font-size: 11.5px;
+  letter-spacing: 0.02em;
+  color: var(--ink-3);
+  margin-top: 3px;
+}
