@@ -501,3 +501,22 @@ body { font-family: var(--sans); -webkit-font-smoothing: antialiased; }
   color: var(--ink-3);
   margin-top: 3px;
 }
+
+/* cookie consent banner */
+.md-consent__form.md-typeset {
+  font-family: var(--sans);
+  text-align: center;
+  max-width: 70ch;
+  margin-inline: auto;
+}
+.md-consent__form.md-typeset h2 {
+  font-family: var(--serif);
+}
+.md-consent__form fieldset {
+  display: inline-flex;
+  flex-direction: column;
+  align-items: center;
+}
+.md-consent__controls .md-button {
+  font-family: var(--sans);
+}
