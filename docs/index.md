@@ -22,7 +22,7 @@ Organise your digital art work into collections, enrich it with metadata, reprod
 [View on GitHub](https://github.com/ToroRojo-code/CatalogueCanvas){ .cc-btn }
 </div>
 
-<p class="cc-hero__version">Version 0.1.0</p>
+<p class="cc-hero__version">Version 0.1.1</p>
 
 </div>
 
