@@ -30,7 +30,7 @@ A prebuilt image is published to the GitHub Container Registry, so you do not ne
 source or build it yourself:
 
 ```bash
-docker pull ghcr.io/cataloguecanvas/cataloguecanvas:0.1.2
+docker pull ghcr.io/cataloguecanvas/cataloguecanvas:0.1.3
 ```
 
 ```bash
@@ -38,7 +38,7 @@ docker run -d \
   -p 8000:8000 \
   -e CC_ADMIN_PASSWORD=yourpassword \
   -v cc-data:/data \
-  ghcr.io/cataloguecanvas/cataloguecanvas:0.1.2
+  ghcr.io/cataloguecanvas/cataloguecanvas:0.1.3
 ```
 
 !!! note "Editors"
@@ -204,6 +204,40 @@ npm run dev
 ```
 
 The Vite dev server proxies API requests to the backend (see `web/vite.config.ts`).
+
+## Updating
+
+<p class="lead">How to move an existing install to a newer release without losing your data.</p>
+
+Everything in the `./data` volume (the database, uploaded assets, and the session key) is left in place, so upgrading does not touch your catalogue.
+
+**Docker (published image):**
+
+```bash
+docker compose pull
+docker compose up -d
+```
+
+**Docker (building from source):**
+
+```bash
+git pull
+docker compose up -d --build
+```
+
+**Bare metal:** pull the source, then rebuild each side:
+
+```bash
+git pull
+(cd server && uv sync)
+(cd web && npm ci && npm run build)
+```
+
+Restart the backend process afterwards.
+
+!!! tip "Know when a new version is out"
+
+    The admin can turn on **Check for updates** in Settings to be told when a newer release exists. See [Checking for updates](admins.md#checking-for-updates).
 
 ## Home-server install
 

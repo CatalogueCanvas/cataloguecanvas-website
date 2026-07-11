@@ -393,6 +393,13 @@ body { font-family: var(--sans); -webkit-font-smoothing: antialiased; }
   text-align: center; margin: 4px 0 0;
   font-size: 13px; color: var(--ink-2);
 }
+.md-typeset .cc-hero__demo {
+  text-align: center; margin: 14px auto 0; max-width: 34rem;
+  font-size: 13.5px; line-height: 1.55; color: var(--ink-2);
+}
+.md-typeset .cc-hero__demo code {
+  font-weight: 600;
+}
 
 /* ---- "Built for…" audience band ---- */
 .cc-who {

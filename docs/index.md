@@ -18,11 +18,12 @@ Organise your digital art work into collections, enrich it with metadata, reprod
 </p>
 
 <div class="cc-hero__cta" markdown>
-[Get started](documentation/intro.md){ .cc-btn .cc-btn--primary }
+[Try it DEMO](demo.md){ .cc-btn .cc-btn--primary target="_blank" rel="noopener" }
+[Get started](documentation/intro.md){ .cc-btn }
 [View on GitHub](https://github.com/ToroRojo-code/CatalogueCanvas){ .cc-btn }
 </div>
 
-<p class="cc-hero__version">Version 0.1.2</p>
+<p class="cc-hero__version">Version 0.1.3</p>
 
 </div>
 

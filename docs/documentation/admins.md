@@ -184,6 +184,16 @@ a CLI script) to attach to a GitHub issue. It covers:
 - Database counts.
 - A **storage-integrity check** (missing or orphaned files).
 
+## Checking for updates
+
+An opt-in **Updates** panel in Settings lets the admin turn on **Check for updates**. It is off by default, and nothing is checked while it stays off.
+
+With it on, the app reads the latest version tag from the CatalogueCanvas GitHub repository at most once a week and compares it against the running version. It only reads the public version list; nothing about your instance is sent anywhere. A **Check now** button forces an immediate check and ignores the weekly interval.
+
+When a newer release exists, an **update available → vX.Y.Z** link appears in the site footer and in the Updates panel; both point at the [Updating](install.md#updating) steps. The check, the button, and the badge are visible to the admin account only. Reader accounts and public visitors never trigger a check or see the badge.
+
+If a check fails because the instance is offline or rate-limited, the app ignores it quietly and carries on.
+
 ## Operations checklist
 
 - [ ] Strong `CC_ADMIN_PASSWORD` set (and a distinct reader password in multi-user mode)
