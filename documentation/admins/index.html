@@ -745,6 +745,17 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#checking-for-updates" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Checking for updates
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#operations-checklist" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -1020,6 +1031,17 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#checking-for-updates" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Checking for updates
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#operations-checklist" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -1241,6 +1263,11 @@ a CLI script) to attach to a GitHub issue. It covers:</p>
 <li>Database counts.</li>
 <li>A <strong>storage-integrity check</strong> (missing or orphaned files).</li>
 </ul>
+<h2 id="checking-for-updates">Checking for updates<a class="headerlink" href="#checking-for-updates" title="Permanent link">&para;</a></h2>
+<p>An opt-in <strong>Updates</strong> panel in Settings lets the admin turn on <strong>Check for updates</strong>. It is off by default, and nothing is checked while it stays off.</p>
+<p>With it on, the app reads the latest version tag from the CatalogueCanvas GitHub repository at most once a week and compares it against the running version. It only reads the public version list; nothing about your instance is sent anywhere. A <strong>Check now</strong> button forces an immediate check and ignores the weekly interval.</p>
+<p>When a newer release exists, an <strong>update available → vX.Y.Z</strong> link appears in the site footer and in the Updates panel; both point at the <a href="../install/#updating">Updating</a> steps. The check, the button, and the badge are visible to the admin account only. Reader accounts and public visitors never trigger a check or see the badge.</p>
+<p>If a check fails because the instance is offline or rate-limited, the app ignores it quietly and carries on.</p>
 <h2 id="operations-checklist">Operations checklist<a class="headerlink" href="#operations-checklist" title="Permanent link">&para;</a></h2>
 <ul class="task-list">
 <li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> Strong <code>CC_ADMIN_PASSWORD</code> set (and a distinct reader password in multi-user mode)</li>
