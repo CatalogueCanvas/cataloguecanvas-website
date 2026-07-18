@@ -30,7 +30,7 @@ A prebuilt image is published to the GitHub Container Registry, so you do not ne
 source or build it yourself:
 
 ```bash
-docker pull ghcr.io/cataloguecanvas/cataloguecanvas:0.1.4
+docker pull ghcr.io/cataloguecanvas/cataloguecanvas:0.1.5
 ```
 
 ```bash
@@ -38,7 +38,7 @@ docker run -d \
   -p 8000:8000 \
   -e CC_ADMIN_PASSWORD=yourpassword \
   -v cc-data:/data \
-  ghcr.io/cataloguecanvas/cataloguecanvas:0.1.4
+  ghcr.io/cataloguecanvas/cataloguecanvas:0.1.5
 ```
 
 !!! note "Editors"
