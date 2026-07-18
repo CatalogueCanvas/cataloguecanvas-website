@@ -12,6 +12,4 @@ hide:
 
 <p class="cc-hero__demo">Log in with the password <code>demodemo</code>.</p>
 
-
-
 <p class="cc-hero__demo" style="margin-top: 16rem;">Demo hosting provided on the free tier by <a href="https://render.com" target="_blank" rel="noopener">Render</a>.</p>
