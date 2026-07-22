@@ -782,6 +782,34 @@
   
   
     <li class="md-nav__item">
+      <a href="../changelog/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Changelog
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
       <a href="../glossary/" class="md-nav__link">
         
   
@@ -1085,7 +1113,11 @@ tray — the work itself runs per-request on the server.</p>
 <li><strong>Navigate</strong> to the previous/next item with the <strong>← / → arrow keys</strong>.</li>
 <li>Open linked files — images and text open inline; other types download.</li>
 <li><strong>Download</strong> the item as a ZIP, or download all its files.</li>
+<li>Click the preview image to open a full-size <strong>lightbox</strong>. Click again to zoom to 1:1 and drag
+  to pan. Arrow-key navigation between items is suspended while the lightbox is open.</li>
 </ul>
+<p>Only an item's selected collections show as chips by default; click <strong>Edit</strong> to reveal the full
+collections checklist, which collapses back after saving.</p>
 <h2 id="bulk-actions">Bulk actions<a class="headerlink" href="#bulk-actions" title="Permanent link">&para;</a></h2>
 <p>Select multiple items in the catalogue to:</p>
 <ul>
@@ -1112,14 +1144,19 @@ catalogue is no longer sent to your browser to filter as you type.</p>
 <li>Create, rename, and describe collections.</li>
 <li>Set a <strong>cover item</strong>.</li>
 <li>Delete a collection (the system <strong>Favourites</strong> collection can't be edited or deleted).</li>
+<li>Each collection has a <strong>View items</strong> link that opens the Items page pre-filtered to it, with a
+  clearable filter chip.</li>
 </ul>
 <h2 id="portfolios-sharing-your-work">Portfolios (sharing your work)<a class="headerlink" href="#portfolios-sharing-your-work" title="Permanent link">&para;</a></h2>
 <ol class="steps">
 <li>Create a portfolio with a <strong>title</strong> and <strong>description</strong>.</li>
 <li>Add and order the items it contains.</li>
 <li>Choose one of four presentation <strong>themes</strong> (see below).</li>
+<li>Choose a <strong>layout</strong>: <code>slide</code> (a full-height deck, printable to PDF at 1920×1080) or
+<code>scroll</code> (a continuous one-page site, no page breaks, no print button). Both work with any theme;
+existing portfolios default to <code>slide</code>.</li>
 <li>A <strong>slug</strong> is auto-generated (e.g. <code>quiet-amber-loom</code>) — or set your own.</li>
-<li>Mark it <strong>Public</strong> to expose it at <code>/p/&lt;slug&gt;</code> as a slide-deck presentation.</li>
+<li>Mark it <strong>Public</strong> to expose it at <code>/p/&lt;slug&gt;</code>.</li>
 <li>Share the link — no login needed to view a public portfolio.</li>
 <li>Or export it as a static site, ready to upload to a web server<sup id="fnref:www"><a class="footnote-ref" href="#fn:www">1</a></sup>.</li>
 </ol>
@@ -1127,6 +1164,8 @@ catalogue is no longer sent to your browser to filter as you type.</p>
 <p class="admonition-title">Note</p>
 <p>Private portfolios return "not found" to anyone without admin access.</p>
 </div>
+<p>Thumbnails in a portfolio's "Works" index link directly to that item's section, in both the live
+deck and the static zip export.</p>
 <h3 id="themes">Themes<a class="headerlink" href="#themes" title="Permanent link">&para;</a></h3>
 <p>Each public portfolio is dressed in one of four presentation themes, chosen per
 portfolio in the portfolio editor. A theme carries its own fixed colours and type,

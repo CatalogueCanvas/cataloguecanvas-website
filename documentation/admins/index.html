@@ -810,6 +810,34 @@
   
   
     <li class="md-nav__item">
+      <a href="../changelog/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Changelog
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
       <a href="../glossary/" class="md-nav__link">
         
   
@@ -1222,7 +1250,9 @@ admin login.</p>
 <li><strong>Reasoning is stripped</strong> from results: <code>&lt;think&gt;</code> blocks and reasoning preambles from
   "thinking" models are removed, and the prompt requests a clean JSON-only response, so
   descriptions contain only the summary and bullet points.</li>
-<li>The request <strong>timeout is 90 seconds</strong>, to accommodate slower local models.</li>
+<li>The request <strong>timeout is configurable from Settings</strong> (default 90 seconds), for both
+  single-item and batch description generation — useful for local LLMs where a cold model load
+  can exceed the default.</li>
 <li>Failures report the <strong>actual cause</strong> (connection, HTTP error, non-JSON, or no choices
   returned) rather than an opaque error.</li>
 <li>The <code>api_url</code> is validated <strong>at settings-save time</strong> — an invalid or non-allowlisted URL is rejected immediately with an error rather than failing silently at describe time.</li>
