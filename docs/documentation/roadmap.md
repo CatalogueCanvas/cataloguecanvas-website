@@ -24,8 +24,12 @@ title: Roadmap
 - :octicons-checkbox-16: Bulk metadata download/upload edits.
 - :octicons-checkbox-16: Bulk actions (tags, clear notes, favourite, download, collections)
 - :octicons-checkbox-16: Keyboard navigation between items (← / →)
-- :octicons-checkbox-16: Public portfolios (slide-deck) at `/p/<slug>`
-- :octicons-checkbox-16: Vision-LLM descriptions (OpenAI-compatible)
+- :octicons-checkbox-16: Public portfolios at `/p/<slug>`, with `slide` (printable deck) or
+  `scroll` (continuous page) layout, four presentation themes, and a clickable Works index
+- :octicons-checkbox-16: Image lightbox with 1:1 zoom and pan
+- :octicons-checkbox-16: Vision-LLM descriptions (OpenAI-compatible), with a configurable
+  response timeout
+- :octicons-checkbox-16: Collection quick-link ("View items" filter chip)
 - :octicons-checkbox-16: Full-text search over all metadata, plus a JSON-LD metadata record per item (FAIR — Findable)
 - :octicons-checkbox-16: Multi-library storage
 - :octicons-checkbox-16: Database + full-asset backup/export

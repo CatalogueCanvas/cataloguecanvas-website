@@ -49,7 +49,7 @@ CatalogueCanvas can describe an item's preview image with any **OpenAI-compatibl
     If CatalogueCanvas runs in a container and your LLM server runs on the host, point the API
     URL at `http://host.docker.internal:<port>` — `localhost` inside the container refers to the
     container itself. Reasoning from "thinking" models is stripped from results, and the request
-    timeout is 90 seconds to allow for slower local models.
+    timeout is configurable from Settings (default 90 seconds) to allow for slower local models.
 
 For full configuration and troubleshooting, see [Admin documentation → LLM / AI descriptions](admins.md).
 

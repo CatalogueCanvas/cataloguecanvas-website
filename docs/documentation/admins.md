@@ -138,7 +138,9 @@ After an upgrade, all existing collections and portfolios land on admin-only. Ad
 - **Reasoning is stripped** from results: `<think>` blocks and reasoning preambles from
   "thinking" models are removed, and the prompt requests a clean JSON-only response, so
   descriptions contain only the summary and bullet points.
-- The request **timeout is 90 seconds**, to accommodate slower local models.
+- The request **timeout is configurable from Settings** (default 90 seconds), for both
+  single-item and batch description generation — useful for local LLMs where a cold model load
+  can exceed the default.
 - Failures report the **actual cause** (connection, HTTP error, non-JSON, or no choices
   returned) rather than an opaque error.
 - The `api_url` is validated **at settings-save time** — an invalid or non-allowlisted URL is rejected immediately with an error rather than failing silently at describe time.

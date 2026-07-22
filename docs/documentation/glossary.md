@@ -108,9 +108,10 @@ Per-item free text written in **Markdown**, rendered as formatted text with a ra
 
 ## Portfolio
 
-A curated, ordered set of items published as a **slide-deck**. Has a title, description, a
-**slug**, and one of four presentation **themes** (Ledger, Kinetic, Brutalist, Riso). Can be
-marked **Public** to be viewable without logging in, or exported as a static site.
+A curated, ordered set of items published as a **slide** (full-height deck, printable to PDF) or
+**scroll** (continuous one-page site) layout. Has a title, description, a **slug**, and one of
+four presentation **themes** (Ledger, Kinetic, Brutalist, Riso). Can be marked **Public** to be
+viewable without logging in, or exported as a static site.
 
 ## Static site export
 

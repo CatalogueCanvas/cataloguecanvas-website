@@ -72,6 +72,7 @@ nav:
       - Uploading items: documentation/uploading.md
       - Admin documentation: documentation/admins.md
       - Roadmap: documentation/roadmap.md
+      - Changelog: documentation/changelog.md
       - Glossary: documentation/glossary.md
 
 plugins:

@@ -82,6 +82,11 @@ On an item's page you can:
 - **Navigate** to the previous/next item with the **← / → arrow keys**.
 - Open linked files — images and text open inline; other types download.
 - **Download** the item as a ZIP, or download all its files.
+- Click the preview image to open a full-size **lightbox**. Click again to zoom to 1:1 and drag
+  to pan. Arrow-key navigation between items is suspended while the lightbox is open.
+
+Only an item's selected collections show as chips by default; click **Edit** to reveal the full
+collections checklist, which collapses back after saving.
 
 ## Bulk actions
 
@@ -112,6 +117,8 @@ catalogue is no longer sent to your browser to filter as you type.
 - Create, rename, and describe collections.
 - Set a **cover item**.
 - Delete a collection (the system **Favourites** collection can't be edited or deleted).
+- Each collection has a **View items** link that opens the Items page pre-filtered to it, with a
+  clearable filter chip.
 
 ## Portfolios (sharing your work)
 
@@ -119,8 +126,11 @@ catalogue is no longer sent to your browser to filter as you type.
 <li markdown>Create a portfolio with a **title** and **description**.</li>
 <li markdown>Add and order the items it contains.</li>
 <li markdown>Choose one of four presentation **themes** (see below).</li>
+<li markdown>Choose a **layout**: `slide` (a full-height deck, printable to PDF at 1920×1080) or
+`scroll` (a continuous one-page site, no page breaks, no print button). Both work with any theme;
+existing portfolios default to `slide`.</li>
 <li markdown>A **slug** is auto-generated (e.g. `quiet-amber-loom`) — or set your own.</li>
-<li markdown>Mark it **Public** to expose it at `/p/<slug>` as a slide-deck presentation.</li>
+<li markdown>Mark it **Public** to expose it at `/p/<slug>`.</li>
 <li markdown>Share the link — no login needed to view a public portfolio.</li>
 <li markdown>Or export it as a static site, ready to upload to a web server[^www].</li>
 </ol>
@@ -128,6 +138,9 @@ catalogue is no longer sent to your browser to filter as you type.
 !!! note
 
     Private portfolios return "not found" to anyone without admin access.
+
+Thumbnails in a portfolio's "Works" index link directly to that item's section, in both the live
+deck and the static zip export.
 
 ### Themes
 
