@@ -12,6 +12,29 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 Released versions are tagged (see `v*` tags and the published `ghcr.io` image); earlier
 pre-release entries are grouped by date.
 
+## [0.2.1] - 2026-07-29
+
+### Added
+- `CC_PREVIEW_MAX_EDGE` (default `2500`) caps the longest edge of a generated SVG preview. Previews were rendered at a blind `scale=2.5` multiplier, so an 1870×2645 plotter SVG rasterised to 4675×6612 — cost grows with the square of the output size and was unbounded. Capping the longest edge cut a representative dense SVG from 7.2s to 2.2s while preserving the aspect ratio, and never upscales inputs already below the cap. Set it to `0` to disable. Applies to new ingests; existing previews are unchanged.
+
+### Fixed
+- Uploading a ZIP no longer stalls the whole server. `POST /api/items/upload` ran the ingest, including SVG rasterisation, directly on the event loop, so a single dense file blocked every other request on the worker until it finished. Behind a reverse proxy this surfaced as a `504` on the upload *and* on unrelated `GET /api/items`, `/api/portfolios` and `/api/collections`, while the app's own log showed only `200 OK`. Ingest now runs in a threadpool.
+
+### Changed
+- Dependency bumps merged from Dependabot: `fastapi` (>=0.139.2 → >=0.140.13), `uvicorn[standard]` (>=0.51.0 → >=0.52.0), `psutil` (>=6.0.0 → >=7.2.2), `jsdom` (29.1.1 → 30.0.1, dev), and the npm minor/patch group covering `@types/node`, `eslint` and `globals` (dev). Workflow action pins moved to `docker/login-action` v4.6.0 and `ossf/scorecard-action` v2.4.4.
+
+## [0.2.0] - 2026-07-28
+
+### Added
+- Anonymous, opt-in telemetry via PostHog (EU region). Nothing is sent by default. A one-time install ping fires on first boot only when `CC_INSTALL_TRACKING=1`, and a weekly usage-stats ping is toggled under Settings → Usage statistics and defaults to off. Both are keyed by a random per-instance ID stored under the data volume; no hostname, IP, paths, or catalogue content is ever sent. Operators can point at their own PostHog with `CC_POSTHOG_HOST` / `CC_POSTHOG_KEY`. See [Privacy](privacy.md) for the fields, payload examples, and how to switch both off.
+
+### Changed
+- Added a dev-only `web-dev` service to `docker-compose.yml` for the web toolchain (install, lint, type-check, test). The shipped image is a production build with no devDependencies, so it cannot run these; the new service is pinned to the same `node:22-slim` digest as the Dockerfile's build stage and sits behind the `dev` compose profile, leaving `docker compose up` unchanged.
+
+### Security
+- Migrated `react-router-dom` 7.18.1 → `react-router` 8.3.0, fixing a CSRF bypass in RSC code paths ([GHSA-qwww-vcr4-c8h2](https://github.com/advisories/GHSA-qwww-vcr4-c8h2)). The `react-router-dom` package no longer exists as of v8 — its exports moved into `react-router` itself, so this is an import-path rename across the web app with no API changes. The advisory only affects apps using the unstable RSC APIs, which this app does not.
+- Bumped `brace-expansion` (dev-only transitive, via eslint/minimatch) to 5.0.8, fixing a denial of service via unbounded expansion length ([GHSA-mh99-v99m-4gvg](https://github.com/advisories/GHSA-mh99-v99m-4gvg)).
+
 ## [0.1.6] - 2026-07-22
 
 ### Added

@@ -34,13 +34,13 @@ Security notes:
 - Sessions are **server-tracked and revocable**, and state-changing requests are protected
   against CSRF with a double-submit token.
 - The session signing key is generated automatically on first start and persisted at
-  `<CC_DATA_DIR>/cc_secret_key.txt` — no manual setup required.
+  `<CC_DATA_DIR>/secret.key` — no manual setup required.
 - Set a strong `CC_ADMIN_PASSWORD` in production (and a distinct password for every account in
   multi-user mode).
 
 ## Settings overview
 
-The **Settings** page groups: Appearance, Users, LLM defaults, Prompt template, Libraries, and Backup & export.
+The **Settings** page groups: Appearance, Users, Usage statistics, LLM defaults, Prompt template, Libraries, and Backup & export.
 
 ### Appearance
 
@@ -63,6 +63,16 @@ admin login.
   ![Multi-user access settings](../assets/sc_MultiUser_CatalogueCanvas.png)
   <figcaption>Settings → Users (multi-user mode on, with Admin and Reader accounts)</figcaption>
 </figure>
+
+### Usage statistics
+
+Off by default. When switched on, the instance sends an anonymous ping at most once a week
+carrying only the app version, install type, operating system, database size, item count and
+total RAM. No hostname, IP, file paths or catalogue content is ever included.
+
+The one-time install ping is separate and controlled by `CC_INSTALL_TRACKING`, not by this
+toggle. [Privacy](privacy.md) lists every field, shows the exact payloads, and covers
+sending the data to your own PostHog instead.
 
 ### LLM defaults
 
@@ -173,6 +183,8 @@ See [Configuration](install.md#configuration) for all available environment vari
 - Item IDs are unique `word-NNN` strings, checked against the database to avoid collisions.
 - Items are **deduplicated by content hash** at ingest.
 - Before extracting a ZIP, ingestion checks available disc space and enforces a per-file size cap as files are decompressed. An archive that would breach the limit is rejected with a clear error; normal uploads are not affected.
+- **SVG previews are capped at 2500 pixels on the longest edge** (`CC_PREVIEW_MAX_EDGE`). Rasterising an SVG costs roughly the square of the output size, so without a cap a dense plotter file could take minutes and hold up an upload. The cap keeps the aspect ratio and never enlarges an image already below it. Set it to `0` to remove the limit. It applies to new ingests only; previews generated before the setting existed are unchanged.
+- **Ingestion runs off the request event loop.** Uploading a large or dense ZIP no longer blocks unrelated requests. Before this, one slow ingest could stall every other call on the worker, which behind a reverse proxy appeared as a `504` on the upload and on unrelated pages while the app's own log reported success.
 
 ## Diagnostics
 

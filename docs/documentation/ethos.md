@@ -23,7 +23,8 @@ home for your work that you fully control. Implementing [FAIR principles](https:
 
 ## What we deliberately avoid
 
-- No telemetry, no phoning home.
+- Nothing hidden, nothing sent by default. The app collects nothing unless an admin turns it
+  on, and what can be turned on is anonymous and coarse. See [Privacy](privacy.md).
 - No vendor lock-in — data is exportable at any time.
 - Reduce as much as possible the barrier to it up setup.
 

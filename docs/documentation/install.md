@@ -30,7 +30,7 @@ A prebuilt image is published to the GitHub Container Registry, so you do not ne
 source or build it yourself:
 
 ```bash
-docker pull ghcr.io/cataloguecanvas/cataloguecanvas:0.1.6
+docker pull ghcr.io/cataloguecanvas/cataloguecanvas:0.2.1
 ```
 
 ```bash
@@ -38,7 +38,7 @@ docker run -d \
   -p 8000:8000 \
   -e CC_ADMIN_PASSWORD=yourpassword \
   -v cc-data:/data \
-  ghcr.io/cataloguecanvas/cataloguecanvas:0.1.6
+  ghcr.io/cataloguecanvas/cataloguecanvas:0.2.1
 ```
 
 !!! note "Editors"
@@ -136,7 +136,7 @@ docker compose up --build
 
 ??? question "Do I need to generate a secret key?"
     No. The **session signing key is generated automatically** on first start and saved to
-    `/data/cc_secret_key.txt` in the data volume, then reused on every restart. There is no
+    `/data/secret.key` in the data volume, then reused on every restart. There is no
     manual key-generation or `secrets/` step. Set `CC_SECRET_KEY` or `CC_SECRET_KEY_FILE` only
     if you want to supply your own.
 
@@ -171,7 +171,7 @@ docker compose up --build
 |---|---|---|
 | `CC_ADMIN_PASSWORD` | _(empty)_ | Admin login password — required to log in |
 | `CC_PORT` | `8000` | Host port mapped to the container (the container always listens on 8000) |
-| `CC_SECRET_KEY_FILE` | `<CC_DATA_DIR>/cc_secret_key.txt` | Path to the session signing key. Auto-generated and persisted on first start; only set this to override the location |
+| `CC_SECRET_KEY_FILE` | `<CC_DATA_DIR>/secret.key` | Path to the session signing key. Auto-generated and persisted on first start; only set this to override the location |
 | `CC_SECRET_KEY` | _(unset)_ | Session signing key as an env var — optional override; if neither this nor the key file is set, a key is generated automatically |
 | `CC_SITE_TITLE` | `My Catalogue` | Title shown in the UI and on public portfolios |
 | `CC_SITE_AUTHOR` | _(empty)_ | Author/owner name shown on public portfolios |
@@ -180,6 +180,10 @@ docker compose up --build
 | `CC_STORAGE_DIR` | `<CC_DATA_DIR>/storage` | Directory for uploaded item assets |
 | `CC_STATIC_DIR` | `web/dist` | Directory of built frontend assets to serve |
 | `CC_LLM_ALLOWED_HOSTS` | _(unset)_ | Comma-separated hostnames/IPs the Describe feature may call. Unset = no restriction. Set to protect against SSRF (e.g. `ollama.lan,192.168.1.50`) |
+| `CC_PREVIEW_MAX_EDGE` | `2500` | Longest edge in pixels for generated SVG previews. Caps rasterisation cost so a dense SVG can't stall an upload; `0` disables the cap |
+| `CC_INSTALL_TRACKING` | `0` | Set to `1` to allow the one-time anonymous install ping. See [Privacy](privacy.md) |
+| `CC_POSTHOG_HOST` | `https://eu.i.posthog.com` | Where telemetry events are sent — override to collect them yourself. See [Privacy](privacy.md) |
+| `CC_POSTHOG_KEY` | _(public capture key shipped with the image)_ | Override to send events to your own PostHog project. See [Privacy](privacy.md) |
 
 !!! note "Editors"
 
