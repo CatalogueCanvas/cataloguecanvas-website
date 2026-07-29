@@ -777,6 +777,34 @@
   
   
     <li class="md-nav__item">
+      <a href="../privacy/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Privacy
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
       <a href="../roadmap/" class="md-nav__link">
         
   
@@ -1116,13 +1144,13 @@
 
 <p>A prebuilt image is published to the GitHub Container Registry, so you do not need to clone the
 source or build it yourself:</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>docker<span class="w"> </span>pull<span class="w"> </span>ghcr.io/cataloguecanvas/cataloguecanvas:0.1.6
+<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>docker<span class="w"> </span>pull<span class="w"> </span>ghcr.io/cataloguecanvas/cataloguecanvas:0.2.1
 </code></pre></div>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>docker<span class="w"> </span>run<span class="w"> </span>-d<span class="w"> </span><span class="se">\</span>
 <a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a><span class="w">  </span>-p<span class="w"> </span><span class="m">8000</span>:8000<span class="w"> </span><span class="se">\</span>
 <a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a><span class="w">  </span>-e<span class="w"> </span><span class="nv">CC_ADMIN_PASSWORD</span><span class="o">=</span>yourpassword<span class="w"> </span><span class="se">\</span>
 <a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a><span class="w">  </span>-v<span class="w"> </span>cc-data:/data<span class="w"> </span><span class="se">\</span>
-<a id="__codelineno-1-5" name="__codelineno-1-5" href="#__codelineno-1-5"></a><span class="w">  </span>ghcr.io/cataloguecanvas/cataloguecanvas:0.1.6
+<a id="__codelineno-1-5" name="__codelineno-1-5" href="#__codelineno-1-5"></a><span class="w">  </span>ghcr.io/cataloguecanvas/cataloguecanvas:0.2.1
 </code></pre></div>
 <div class="admonition note">
 <p class="admonition-title">Editors</p>
@@ -1207,7 +1235,7 @@ volume, mounted at <code>/data</code> inside the container. Removing the contain
 <details class="question">
 <summary>Do I need to generate a secret key?</summary>
 <p>No. The <strong>session signing key is generated automatically</strong> on first start and saved to
-<code>/data/cc_secret_key.txt</code> in the data volume, then reused on every restart. There is no
+<code>/data/secret.key</code> in the data volume, then reused on every restart. There is no
 manual key-generation or <code>secrets/</code> step. Set <code>CC_SECRET_KEY</code> or <code>CC_SECRET_KEY_FILE</code> only
 if you want to supply your own.</p>
 </details>
@@ -1255,7 +1283,7 @@ container — it is required. See <a href="#troubleshooting">Troubleshooting</a>
 </tr>
 <tr>
 <td><code>CC_SECRET_KEY_FILE</code></td>
-<td><code>&lt;CC_DATA_DIR&gt;/cc_secret_key.txt</code></td>
+<td><code>&lt;CC_DATA_DIR&gt;/secret.key</code></td>
 <td>Path to the session signing key. Auto-generated and persisted on first start; only set this to override the location</td>
 </tr>
 <tr>
@@ -1297,6 +1325,26 @@ container — it is required. See <a href="#troubleshooting">Troubleshooting</a>
 <td><code>CC_LLM_ALLOWED_HOSTS</code></td>
 <td><em>(unset)</em></td>
 <td>Comma-separated hostnames/IPs the Describe feature may call. Unset = no restriction. Set to protect against SSRF (e.g. <code>ollama.lan,192.168.1.50</code>)</td>
+</tr>
+<tr>
+<td><code>CC_PREVIEW_MAX_EDGE</code></td>
+<td><code>2500</code></td>
+<td>Longest edge in pixels for generated SVG previews. Caps rasterisation cost so a dense SVG can't stall an upload; <code>0</code> disables the cap</td>
+</tr>
+<tr>
+<td><code>CC_INSTALL_TRACKING</code></td>
+<td><code>0</code></td>
+<td>Set to <code>1</code> to allow the one-time anonymous install ping. See <a href="../privacy/">Privacy</a></td>
+</tr>
+<tr>
+<td><code>CC_POSTHOG_HOST</code></td>
+<td><code>https://eu.i.posthog.com</code></td>
+<td>Where telemetry events are sent — override to collect them yourself. See <a href="../privacy/">Privacy</a></td>
+</tr>
+<tr>
+<td><code>CC_POSTHOG_KEY</code></td>
+<td><em>(public capture key shipped with the image)</em></td>
+<td>Override to send events to your own PostHog project. See <a href="../privacy/">Privacy</a></td>
 </tr>
 </tbody>
 </table>
