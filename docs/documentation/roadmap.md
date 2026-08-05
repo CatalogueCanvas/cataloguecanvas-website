@@ -41,5 +41,8 @@ title: Roadmap
 - :octicons-checkbox-16: On-brand 404 page
 - :octicons-checkbox-16: Catalogue sorting & filtering controls
 - :octicons-checkbox-16: Templates for portfolios — a rule-set skill for an LLM to generate one
+- :octicons-checkbox-16: Activity log of every change, with CSV export
+- :octicons-checkbox-16: `cc` maintenance command line tool — password reset, backup, restore, bulk ingest, diagnostics
+- :octicons-checkbox-16: Public IP addresses blocked by default, with a trusted-proxy list
 
 <!-- ✅🔐🎥💡👀 !®️♾️➰ 🔴🟠🟡🟢 -->

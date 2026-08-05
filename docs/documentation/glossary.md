@@ -8,6 +8,13 @@ title: Glossary
 
 <p class="lead">Terminology used across CatalogueCanvas and this documentation.</p>
 
+## Activity log
+
+A local record of every change made to the catalogue (who, when, what action, and what it
+touched), written as JSONL to `<CC_DATA_DIR>/logs/audit.log`. It records field names rather than
+values, so passwords, share tokens and note bodies never appear in it, and it is never
+transmitted anywhere. See [Activity log](admins.md#activity-log).
+
 ## Admin
 
 A privileged user, authenticated by password + session cookie, with full access: upload, edit,
@@ -143,6 +150,13 @@ as three words (e.g. `quiet-amber-loom`) or set manually. Must be unique.
 ## Tags
 
 Free-form labels on items, addable individually or in **bulk**.
+
+## Trusted proxy
+
+A reverse proxy listed in `CC_TRUSTED_PROXIES`. Because every request behind a proxy arrives
+from the proxy's own address, the app reads the real client address from `X-Forwarded-For` —
+but only when the immediate peer is on this list. Trusting the header from any caller would let
+anyone claim to be a local client. See [Behind a reverse proxy](admins.md#behind-a-reverse-proxy).
 
 ## WebP
 

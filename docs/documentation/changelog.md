@@ -12,6 +12,22 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 Released versions are tagged (see `v*` tags and the published `ghcr.io` image); earlier
 pre-release entries are grouped by date.
 
+## [Unreleased]
+
+### Added
+- Activity log. Every change is appended to `<CC_DATA_DIR>/logs/audit.log` as JSONL — who did it, when, what action, and what it touched — covering logins and failed logins, uploads, deletions, metadata and batch edits, CSV imports, collection/portfolio/user/library changes, share-token mint and clear, static exports, settings updates, and data exports. Nothing recorded mutations before this; the only trace was uvicorn's access log, which shows method, path and status but never identity. Only field *names* are recorded — passwords, password hashes, share tokens, note bodies, prompt templates and the LLM API URL never reach the log. The file rotates at `CC_AUDIT_LOG_MAX_BYTES` (default 5 MiB) keeping one previous generation, and writes are best-effort, so a read-only volume or full disc degrades to no logging rather than failing the request that triggered it. Disable with `CC_AUDIT_LOG=0`. See [Activity log](admins.md#activity-log).
+- **Settings → Activity log** panel: recent entries in a table, **Download log (CSV)**, and **Delete log** behind the same typed-confirmation pattern the metadata backups use. Clearing the log records the clear itself, written after truncation, so a wiped log shows who wiped it rather than looking untouched.
+- `cc` command line tool, installed in the image and available as `docker compose exec cataloguecanvas cc <command>` (or `uv run cc ...` from `server/` on bare metal). `cc reset-password` sets a password and revokes every active session, so a reset also invalidates a stolen cookie; `cc backup` writes the database plus all library files to a zip, sharing a code path with the Settings export so the archives match; `cc restore` is a new capability with no prior equivalent anywhere, validating the archive against path traversal, absolute paths and symlink entries before extracting, refusing to overwrite a populated database without `--force`, and renaming the existing database to `catalogue.db.pre-restore-<timestamp>` instead of deleting it; `cc ingest` bulk-ingests every `.zip` under a mounted folder, deduplicating by content hash; `cc diagnostics` prints the redacted report the Settings page downloads. See [Command line tools](admins.md#command-line-tools).
+- `server-dev` compose service and `server/Dockerfile.dev` for running the test suite in a container, matching the existing `web-dev` service. The shipped image installs with `--no-dev` and drops the build toolchain, so it cannot run the suite itself. Both sit behind the `dev` profile, so a plain `docker compose up` ignores them.
+
+### Changed
+- **BREAKING:** `CC_ALLOW_EXTERNAL_REQUESTS` now defaults to `false`, so requests from public IP addresses are refused with `403`. This guards against the common self-hosting accident of a port forward silently exposing the whole catalogue, and it applies to every route **including public portfolio links**. Anyone reaching their instance over a public IP must set `CC_ALLOW_EXTERNAL_REQUESTS=true`; anyone behind a reverse proxy must additionally list it in `CC_TRUSTED_PROXIES` for the real client address to be read. `X-Forwarded-For` is ignored unless the immediate peer is a listed proxy — honouring it unconditionally would let any caller claim to be `127.0.0.1` and defeat the check. Blocked requests are logged once per source address per minute, so a scanner cannot fill the disc. See [Network access](admins.md#network-access).
+- The full-backup endpoint delegates to the shared backup helper, so the interface export and `cc backup` produce identical archive layouts.
+- The diagnostic report and the settings response now surface the effective access policy (external requests, trusted proxies) and the activity-log configuration — enough to tell at a glance whether the external-request block is why an instance is unreachable.
+
+### Fixed
+- `cc reset-password --password ""` now fails with an error instead of dropping into an interactive prompt, which would have hung a script whose password variable was unset.
+
 ## [0.2.1] - 2026-07-29
 
 ### Added
