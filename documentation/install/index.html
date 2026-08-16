@@ -1332,6 +1332,31 @@ container — it is required. See <a href="#troubleshooting">Troubleshooting</a>
 <td>Longest edge in pixels for generated SVG previews. Caps rasterisation cost so a dense SVG can't stall an upload; <code>0</code> disables the cap</td>
 </tr>
 <tr>
+<td><code>CC_MAX_UPLOAD_BYTES</code></td>
+<td><code>1073741824</code> (1 GiB)</td>
+<td>Maximum size of an uploaded ZIP file</td>
+</tr>
+<tr>
+<td><code>CC_MAX_ZIP_MEMBER_BYTES</code></td>
+<td><code>524288000</code> (500 MiB)</td>
+<td>Maximum size of a single file inside an uploaded ZIP</td>
+</tr>
+<tr>
+<td><code>CC_MAX_ZIP_TOTAL_BYTES</code></td>
+<td><code>1073741824</code> (1 GiB)</td>
+<td>Maximum total decompressed size of an uploaded ZIP</td>
+</tr>
+<tr>
+<td><code>CC_MAX_ZIP_ENTRIES</code></td>
+<td><code>10000</code></td>
+<td>Maximum number of files inside an uploaded ZIP</td>
+</tr>
+<tr>
+<td><code>CC_MAX_CONCURRENT_UPLOADS</code></td>
+<td><code>4</code></td>
+<td>How many uploads can ingest at once. Bounds peak memory during a burst to roughly this many × <code>CC_MAX_ZIP_TOTAL_BYTES</code>; lower it on memory-constrained hosts. See <a href="../admins/#upload-concurrency-and-memory">Upload concurrency</a></td>
+</tr>
+<tr>
 <td><code>CC_INSTALL_TRACKING</code></td>
 <td><code>0</code></td>
 <td>Set to <code>1</code> to allow the one-time anonymous install ping. See <a href="../privacy/">Privacy</a></td>
@@ -1345,6 +1370,31 @@ container — it is required. See <a href="#troubleshooting">Troubleshooting</a>
 <td><code>CC_POSTHOG_KEY</code></td>
 <td><em>(public capture key shipped with the image)</em></td>
 <td>Override to send events to your own PostHog project. See <a href="../privacy/">Privacy</a></td>
+</tr>
+<tr>
+<td><code>CC_ALLOW_EXTERNAL_REQUESTS</code></td>
+<td><code>false</code></td>
+<td>When <code>false</code>, requests from public IP addresses are refused with <code>403</code> — every route, public portfolios included. Set <code>true</code> to serve public clients. See <a href="../admins/#network-access">Network access</a></td>
+</tr>
+<tr>
+<td><code>CC_TRUSTED_PROXIES</code></td>
+<td><em>(empty)</em></td>
+<td>Comma-separated addresses of reverse proxies in front of the app. <code>X-Forwarded-For</code> is ignored unless the immediate peer is listed here. See <a href="../admins/#behind-a-reverse-proxy">Behind a reverse proxy</a></td>
+</tr>
+<tr>
+<td><code>CC_AUDIT_LOG</code></td>
+<td><code>1</code></td>
+<td>Set <code>0</code> to switch off the activity log. See <a href="../admins/#activity-log">Activity log</a></td>
+</tr>
+<tr>
+<td><code>CC_AUDIT_LOG_PATH</code></td>
+<td><code>&lt;CC_DATA_DIR&gt;/logs/audit.log</code></td>
+<td>Where the activity log is written</td>
+</tr>
+<tr>
+<td><code>CC_AUDIT_LOG_MAX_BYTES</code></td>
+<td><code>5242880</code></td>
+<td>Size (5 MiB) at which the activity log rotates, keeping one previous generation</td>
 </tr>
 </tbody>
 </table>
@@ -1368,18 +1418,30 @@ container — it is required. See <a href="#troubleshooting">Troubleshooting</a>
 <p class="lead">How to move an existing install to a newer release without losing your data.</p>
 
 <p>Everything in the <code>./data</code> volume (the database, uploaded assets, and the session key) is left in place, so upgrading does not touch your catalogue.</p>
+<div class="admonition danger">
+<p class="admonition-title">Breaking change: public IP addresses are now blocked</p>
+<p><code>CC_ALLOW_EXTERNAL_REQUESTS</code> now defaults to <code>false</code>. After upgrading, any request from a
+public IP address is refused with <code>403</code> — on every route, <strong>including public portfolio
+links</strong>. If you reach your instance over a public address, set:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-11-1" name="__codelineno-11-1" href="#__codelineno-11-1"></a>CC_ALLOW_EXTERNAL_REQUESTS=true
+</code></pre></div>
+<p>Behind a reverse proxy, list it as well so the real client address can be read:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-12-1" name="__codelineno-12-1" href="#__codelineno-12-1"></a>CC_TRUSTED_PROXIES=172.18.0.2
+</code></pre></div>
+<p>See <a href="../admins/#network-access">Network access</a> for why the header needs an explicit trust list.</p>
+</div>
 <p><strong>Docker (published image):</strong></p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-11-1" name="__codelineno-11-1" href="#__codelineno-11-1"></a>docker<span class="w"> </span>compose<span class="w"> </span>pull
-<a id="__codelineno-11-2" name="__codelineno-11-2" href="#__codelineno-11-2"></a>docker<span class="w"> </span>compose<span class="w"> </span>up<span class="w"> </span>-d
+<div class="highlight"><pre><span></span><code><a id="__codelineno-13-1" name="__codelineno-13-1" href="#__codelineno-13-1"></a>docker<span class="w"> </span>compose<span class="w"> </span>pull
+<a id="__codelineno-13-2" name="__codelineno-13-2" href="#__codelineno-13-2"></a>docker<span class="w"> </span>compose<span class="w"> </span>up<span class="w"> </span>-d
 </code></pre></div>
 <p><strong>Docker (building from source):</strong></p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-12-1" name="__codelineno-12-1" href="#__codelineno-12-1"></a>git<span class="w"> </span>pull
-<a id="__codelineno-12-2" name="__codelineno-12-2" href="#__codelineno-12-2"></a>docker<span class="w"> </span>compose<span class="w"> </span>up<span class="w"> </span>-d<span class="w"> </span>--build
+<div class="highlight"><pre><span></span><code><a id="__codelineno-14-1" name="__codelineno-14-1" href="#__codelineno-14-1"></a>git<span class="w"> </span>pull
+<a id="__codelineno-14-2" name="__codelineno-14-2" href="#__codelineno-14-2"></a>docker<span class="w"> </span>compose<span class="w"> </span>up<span class="w"> </span>-d<span class="w"> </span>--build
 </code></pre></div>
 <p><strong>Bare metal:</strong> pull the source, then rebuild each side:</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-13-1" name="__codelineno-13-1" href="#__codelineno-13-1"></a>git<span class="w"> </span>pull
-<a id="__codelineno-13-2" name="__codelineno-13-2" href="#__codelineno-13-2"></a><span class="o">(</span><span class="nb">cd</span><span class="w"> </span>server<span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span>uv<span class="w"> </span>sync<span class="o">)</span>
-<a id="__codelineno-13-3" name="__codelineno-13-3" href="#__codelineno-13-3"></a><span class="o">(</span><span class="nb">cd</span><span class="w"> </span>web<span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span>npm<span class="w"> </span>ci<span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span>npm<span class="w"> </span>run<span class="w"> </span>build<span class="o">)</span>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-15-1" name="__codelineno-15-1" href="#__codelineno-15-1"></a>git<span class="w"> </span>pull
+<a id="__codelineno-15-2" name="__codelineno-15-2" href="#__codelineno-15-2"></a><span class="o">(</span><span class="nb">cd</span><span class="w"> </span>server<span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span>uv<span class="w"> </span>sync<span class="o">)</span>
+<a id="__codelineno-15-3" name="__codelineno-15-3" href="#__codelineno-15-3"></a><span class="o">(</span><span class="nb">cd</span><span class="w"> </span>web<span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span>npm<span class="w"> </span>ci<span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span>npm<span class="w"> </span>run<span class="w"> </span>build<span class="o">)</span>
 </code></pre></div>
 <p>Restart the backend process afterwards.</p>
 <div class="admonition tip">
@@ -1394,14 +1456,14 @@ container — it is required. See <a href="#troubleshooting">Troubleshooting</a>
 <li>
 Pick a directory on the host for persistent data and point the data volume at it, so your database and assets live outside the container:
 
-<div class="highlight"><pre><span></span><code><a id="__codelineno-14-1" name="__codelineno-14-1" href="#__codelineno-14-1"></a>mkdir<span class="w"> </span>-p<span class="w"> </span>/srv/cataloguecanvas/data
+<div class="highlight"><pre><span></span><code><a id="__codelineno-16-1" name="__codelineno-16-1" href="#__codelineno-16-1"></a>mkdir<span class="w"> </span>-p<span class="w"> </span>/srv/cataloguecanvas/data
 </code></pre></div>
 
 </li>
 <li>
 Start it with the data directory bind-mounted and a restart policy so it comes back after a reboot:
 
-<div class="highlight"><pre><span></span><code><a id="__codelineno-15-1" name="__codelineno-15-1" href="#__codelineno-15-1"></a><span class="nv">CC_ADMIN_PASSWORD</span><span class="o">=</span>yourpassword<span class="w"> </span>docker<span class="w"> </span>compose<span class="w"> </span>up<span class="w"> </span>-d
+<div class="highlight"><pre><span></span><code><a id="__codelineno-17-1" name="__codelineno-17-1" href="#__codelineno-17-1"></a><span class="nv">CC_ADMIN_PASSWORD</span><span class="o">=</span>yourpassword<span class="w"> </span>docker<span class="w"> </span>compose<span class="w"> </span>up<span class="w"> </span>-d
 </code></pre></div>
 
 
@@ -1436,24 +1498,24 @@ Start it with the data directory bind-mounted and a restart policy so it comes b
 <li><code>git</code></li>
 </ul>
 <p><strong>Step by step</strong></p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-16-1" name="__codelineno-16-1" href="#__codelineno-16-1"></a><span class="c1"># 1. System packages</span>
-<a id="__codelineno-16-2" name="__codelineno-16-2" href="#__codelineno-16-2"></a>sudo<span class="w"> </span>apt<span class="w"> </span>update
-<a id="__codelineno-16-3" name="__codelineno-16-3" href="#__codelineno-16-3"></a>sudo<span class="w"> </span>apt<span class="w"> </span>install<span class="w"> </span>-y<span class="w"> </span>python3<span class="w"> </span>python3-venv<span class="w"> </span>git<span class="w"> </span>curl
-<a id="__codelineno-16-4" name="__codelineno-16-4" href="#__codelineno-16-4"></a>
-<a id="__codelineno-16-5" name="__codelineno-16-5" href="#__codelineno-16-5"></a><span class="c1"># 2. uv (backend package manager)</span>
-<a id="__codelineno-16-6" name="__codelineno-16-6" href="#__codelineno-16-6"></a>curl<span class="w"> </span>-LsSf<span class="w"> </span>https://astral.sh/uv/install.sh<span class="w"> </span><span class="p">|</span><span class="w"> </span>sh
-<a id="__codelineno-16-7" name="__codelineno-16-7" href="#__codelineno-16-7"></a>
-<a id="__codelineno-16-8" name="__codelineno-16-8" href="#__codelineno-16-8"></a><span class="c1"># 3. Node.js 22+ (NodeSource)</span>
-<a id="__codelineno-16-9" name="__codelineno-16-9" href="#__codelineno-16-9"></a>curl<span class="w"> </span>-fsSL<span class="w"> </span>https://deb.nodesource.com/setup_22.x<span class="w"> </span><span class="p">|</span><span class="w"> </span>sudo<span class="w"> </span>-E<span class="w"> </span>bash<span class="w"> </span>-
-<a id="__codelineno-16-10" name="__codelineno-16-10" href="#__codelineno-16-10"></a>sudo<span class="w"> </span>apt<span class="w"> </span>install<span class="w"> </span>-y<span class="w"> </span>nodejs
-<a id="__codelineno-16-11" name="__codelineno-16-11" href="#__codelineno-16-11"></a>
-<a id="__codelineno-16-12" name="__codelineno-16-12" href="#__codelineno-16-12"></a><span class="c1"># 4. Get the source</span>
-<a id="__codelineno-16-13" name="__codelineno-16-13" href="#__codelineno-16-13"></a>git<span class="w"> </span>clone<span class="w"> </span>https://github.com/ToroRojo-code/CatalogueCanvas.git
-<a id="__codelineno-16-14" name="__codelineno-16-14" href="#__codelineno-16-14"></a><span class="nb">cd</span><span class="w"> </span>CatalogueCanvas
-<a id="__codelineno-16-15" name="__codelineno-16-15" href="#__codelineno-16-15"></a>
-<a id="__codelineno-16-16" name="__codelineno-16-16" href="#__codelineno-16-16"></a><span class="c1"># 5. Build frontend + install backend</span>
-<a id="__codelineno-16-17" name="__codelineno-16-17" href="#__codelineno-16-17"></a><span class="o">(</span><span class="nb">cd</span><span class="w"> </span>web<span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span>npm<span class="w"> </span>ci<span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span>npm<span class="w"> </span>run<span class="w"> </span>build<span class="o">)</span>
-<a id="__codelineno-16-18" name="__codelineno-16-18" href="#__codelineno-16-18"></a><span class="o">(</span><span class="nb">cd</span><span class="w"> </span>server<span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span>uv<span class="w"> </span>sync<span class="o">)</span>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-18-1" name="__codelineno-18-1" href="#__codelineno-18-1"></a><span class="c1"># 1. System packages</span>
+<a id="__codelineno-18-2" name="__codelineno-18-2" href="#__codelineno-18-2"></a>sudo<span class="w"> </span>apt<span class="w"> </span>update
+<a id="__codelineno-18-3" name="__codelineno-18-3" href="#__codelineno-18-3"></a>sudo<span class="w"> </span>apt<span class="w"> </span>install<span class="w"> </span>-y<span class="w"> </span>python3<span class="w"> </span>python3-venv<span class="w"> </span>git<span class="w"> </span>curl
+<a id="__codelineno-18-4" name="__codelineno-18-4" href="#__codelineno-18-4"></a>
+<a id="__codelineno-18-5" name="__codelineno-18-5" href="#__codelineno-18-5"></a><span class="c1"># 2. uv (backend package manager)</span>
+<a id="__codelineno-18-6" name="__codelineno-18-6" href="#__codelineno-18-6"></a>curl<span class="w"> </span>-LsSf<span class="w"> </span>https://astral.sh/uv/install.sh<span class="w"> </span><span class="p">|</span><span class="w"> </span>sh
+<a id="__codelineno-18-7" name="__codelineno-18-7" href="#__codelineno-18-7"></a>
+<a id="__codelineno-18-8" name="__codelineno-18-8" href="#__codelineno-18-8"></a><span class="c1"># 3. Node.js 22+ (NodeSource)</span>
+<a id="__codelineno-18-9" name="__codelineno-18-9" href="#__codelineno-18-9"></a>curl<span class="w"> </span>-fsSL<span class="w"> </span>https://deb.nodesource.com/setup_22.x<span class="w"> </span><span class="p">|</span><span class="w"> </span>sudo<span class="w"> </span>-E<span class="w"> </span>bash<span class="w"> </span>-
+<a id="__codelineno-18-10" name="__codelineno-18-10" href="#__codelineno-18-10"></a>sudo<span class="w"> </span>apt<span class="w"> </span>install<span class="w"> </span>-y<span class="w"> </span>nodejs
+<a id="__codelineno-18-11" name="__codelineno-18-11" href="#__codelineno-18-11"></a>
+<a id="__codelineno-18-12" name="__codelineno-18-12" href="#__codelineno-18-12"></a><span class="c1"># 4. Get the source</span>
+<a id="__codelineno-18-13" name="__codelineno-18-13" href="#__codelineno-18-13"></a>git<span class="w"> </span>clone<span class="w"> </span>https://github.com/ToroRojo-code/CatalogueCanvas.git
+<a id="__codelineno-18-14" name="__codelineno-18-14" href="#__codelineno-18-14"></a><span class="nb">cd</span><span class="w"> </span>CatalogueCanvas
+<a id="__codelineno-18-15" name="__codelineno-18-15" href="#__codelineno-18-15"></a>
+<a id="__codelineno-18-16" name="__codelineno-18-16" href="#__codelineno-18-16"></a><span class="c1"># 5. Build frontend + install backend</span>
+<a id="__codelineno-18-17" name="__codelineno-18-17" href="#__codelineno-18-17"></a><span class="o">(</span><span class="nb">cd</span><span class="w"> </span>web<span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span>npm<span class="w"> </span>ci<span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span>npm<span class="w"> </span>run<span class="w"> </span>build<span class="o">)</span>
+<a id="__codelineno-18-18" name="__codelineno-18-18" href="#__codelineno-18-18"></a><span class="o">(</span><span class="nb">cd</span><span class="w"> </span>server<span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span>uv<span class="w"> </span>sync<span class="o">)</span>
 </code></pre></div>
 </details>
 <details class="question">
@@ -1466,23 +1528,23 @@ Start it with the data directory bind-mounted and a restart policy so it comes b
 <li><code>git</code></li>
 </ul>
 <p><strong>Step by step</strong></p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-17-1" name="__codelineno-17-1" href="#__codelineno-17-1"></a><span class="c1"># 1. System packages</span>
-<a id="__codelineno-17-2" name="__codelineno-17-2" href="#__codelineno-17-2"></a>sudo<span class="w"> </span>dnf<span class="w"> </span>install<span class="w"> </span>-y<span class="w"> </span>python3<span class="w"> </span>git<span class="w"> </span>curl
-<a id="__codelineno-17-3" name="__codelineno-17-3" href="#__codelineno-17-3"></a>
-<a id="__codelineno-17-4" name="__codelineno-17-4" href="#__codelineno-17-4"></a><span class="c1"># 2. uv (backend package manager)</span>
-<a id="__codelineno-17-5" name="__codelineno-17-5" href="#__codelineno-17-5"></a>curl<span class="w"> </span>-LsSf<span class="w"> </span>https://astral.sh/uv/install.sh<span class="w"> </span><span class="p">|</span><span class="w"> </span>sh
-<a id="__codelineno-17-6" name="__codelineno-17-6" href="#__codelineno-17-6"></a>
-<a id="__codelineno-17-7" name="__codelineno-17-7" href="#__codelineno-17-7"></a><span class="c1"># 3. Node.js 22+ (NodeSource)</span>
-<a id="__codelineno-17-8" name="__codelineno-17-8" href="#__codelineno-17-8"></a>curl<span class="w"> </span>-fsSL<span class="w"> </span>https://rpm.nodesource.com/setup_22.x<span class="w"> </span><span class="p">|</span><span class="w"> </span>sudo<span class="w"> </span>-E<span class="w"> </span>bash<span class="w"> </span>-
-<a id="__codelineno-17-9" name="__codelineno-17-9" href="#__codelineno-17-9"></a>sudo<span class="w"> </span>dnf<span class="w"> </span>install<span class="w"> </span>-y<span class="w"> </span>nodejs
-<a id="__codelineno-17-10" name="__codelineno-17-10" href="#__codelineno-17-10"></a>
-<a id="__codelineno-17-11" name="__codelineno-17-11" href="#__codelineno-17-11"></a><span class="c1"># 4. Get the source</span>
-<a id="__codelineno-17-12" name="__codelineno-17-12" href="#__codelineno-17-12"></a>git<span class="w"> </span>clone<span class="w"> </span>https://github.com/ToroRojo-code/CatalogueCanvas.git
-<a id="__codelineno-17-13" name="__codelineno-17-13" href="#__codelineno-17-13"></a><span class="nb">cd</span><span class="w"> </span>CatalogueCanvas
-<a id="__codelineno-17-14" name="__codelineno-17-14" href="#__codelineno-17-14"></a>
-<a id="__codelineno-17-15" name="__codelineno-17-15" href="#__codelineno-17-15"></a><span class="c1"># 5. Build frontend + install backend</span>
-<a id="__codelineno-17-16" name="__codelineno-17-16" href="#__codelineno-17-16"></a><span class="o">(</span><span class="nb">cd</span><span class="w"> </span>web<span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span>npm<span class="w"> </span>ci<span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span>npm<span class="w"> </span>run<span class="w"> </span>build<span class="o">)</span>
-<a id="__codelineno-17-17" name="__codelineno-17-17" href="#__codelineno-17-17"></a><span class="o">(</span><span class="nb">cd</span><span class="w"> </span>server<span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span>uv<span class="w"> </span>sync<span class="o">)</span>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-19-1" name="__codelineno-19-1" href="#__codelineno-19-1"></a><span class="c1"># 1. System packages</span>
+<a id="__codelineno-19-2" name="__codelineno-19-2" href="#__codelineno-19-2"></a>sudo<span class="w"> </span>dnf<span class="w"> </span>install<span class="w"> </span>-y<span class="w"> </span>python3<span class="w"> </span>git<span class="w"> </span>curl
+<a id="__codelineno-19-3" name="__codelineno-19-3" href="#__codelineno-19-3"></a>
+<a id="__codelineno-19-4" name="__codelineno-19-4" href="#__codelineno-19-4"></a><span class="c1"># 2. uv (backend package manager)</span>
+<a id="__codelineno-19-5" name="__codelineno-19-5" href="#__codelineno-19-5"></a>curl<span class="w"> </span>-LsSf<span class="w"> </span>https://astral.sh/uv/install.sh<span class="w"> </span><span class="p">|</span><span class="w"> </span>sh
+<a id="__codelineno-19-6" name="__codelineno-19-6" href="#__codelineno-19-6"></a>
+<a id="__codelineno-19-7" name="__codelineno-19-7" href="#__codelineno-19-7"></a><span class="c1"># 3. Node.js 22+ (NodeSource)</span>
+<a id="__codelineno-19-8" name="__codelineno-19-8" href="#__codelineno-19-8"></a>curl<span class="w"> </span>-fsSL<span class="w"> </span>https://rpm.nodesource.com/setup_22.x<span class="w"> </span><span class="p">|</span><span class="w"> </span>sudo<span class="w"> </span>-E<span class="w"> </span>bash<span class="w"> </span>-
+<a id="__codelineno-19-9" name="__codelineno-19-9" href="#__codelineno-19-9"></a>sudo<span class="w"> </span>dnf<span class="w"> </span>install<span class="w"> </span>-y<span class="w"> </span>nodejs
+<a id="__codelineno-19-10" name="__codelineno-19-10" href="#__codelineno-19-10"></a>
+<a id="__codelineno-19-11" name="__codelineno-19-11" href="#__codelineno-19-11"></a><span class="c1"># 4. Get the source</span>
+<a id="__codelineno-19-12" name="__codelineno-19-12" href="#__codelineno-19-12"></a>git<span class="w"> </span>clone<span class="w"> </span>https://github.com/ToroRojo-code/CatalogueCanvas.git
+<a id="__codelineno-19-13" name="__codelineno-19-13" href="#__codelineno-19-13"></a><span class="nb">cd</span><span class="w"> </span>CatalogueCanvas
+<a id="__codelineno-19-14" name="__codelineno-19-14" href="#__codelineno-19-14"></a>
+<a id="__codelineno-19-15" name="__codelineno-19-15" href="#__codelineno-19-15"></a><span class="c1"># 5. Build frontend + install backend</span>
+<a id="__codelineno-19-16" name="__codelineno-19-16" href="#__codelineno-19-16"></a><span class="o">(</span><span class="nb">cd</span><span class="w"> </span>web<span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span>npm<span class="w"> </span>ci<span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span>npm<span class="w"> </span>run<span class="w"> </span>build<span class="o">)</span>
+<a id="__codelineno-19-17" name="__codelineno-19-17" href="#__codelineno-19-17"></a><span class="o">(</span><span class="nb">cd</span><span class="w"> </span>server<span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span>uv<span class="w"> </span>sync<span class="o">)</span>
 </code></pre></div>
 </details>
 <details class="question">
@@ -1496,16 +1558,16 @@ Start it with the data directory bind-mounted and a restart policy so it comes b
 <li><code>git</code></li>
 </ul>
 <p><strong>Step by step</strong></p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-18-1" name="__codelineno-18-1" href="#__codelineno-18-1"></a><span class="c1"># 1. Toolchain via Homebrew</span>
-<a id="__codelineno-18-2" name="__codelineno-18-2" href="#__codelineno-18-2"></a>brew<span class="w"> </span>install<span class="w"> </span>python@3.11<span class="w"> </span>node@22<span class="w"> </span>git<span class="w"> </span>uv
-<a id="__codelineno-18-3" name="__codelineno-18-3" href="#__codelineno-18-3"></a>
-<a id="__codelineno-18-4" name="__codelineno-18-4" href="#__codelineno-18-4"></a><span class="c1"># 2. Get the source</span>
-<a id="__codelineno-18-5" name="__codelineno-18-5" href="#__codelineno-18-5"></a>git<span class="w"> </span>clone<span class="w"> </span>https://github.com/ToroRojo-code/CatalogueCanvas.git
-<a id="__codelineno-18-6" name="__codelineno-18-6" href="#__codelineno-18-6"></a><span class="nb">cd</span><span class="w"> </span>CatalogueCanvas
-<a id="__codelineno-18-7" name="__codelineno-18-7" href="#__codelineno-18-7"></a>
-<a id="__codelineno-18-8" name="__codelineno-18-8" href="#__codelineno-18-8"></a><span class="c1"># 3. Build frontend + install backend</span>
-<a id="__codelineno-18-9" name="__codelineno-18-9" href="#__codelineno-18-9"></a><span class="o">(</span><span class="nb">cd</span><span class="w"> </span>web<span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span>npm<span class="w"> </span>ci<span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span>npm<span class="w"> </span>run<span class="w"> </span>build<span class="o">)</span>
-<a id="__codelineno-18-10" name="__codelineno-18-10" href="#__codelineno-18-10"></a><span class="o">(</span><span class="nb">cd</span><span class="w"> </span>server<span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span>uv<span class="w"> </span>sync<span class="o">)</span>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-20-1" name="__codelineno-20-1" href="#__codelineno-20-1"></a><span class="c1"># 1. Toolchain via Homebrew</span>
+<a id="__codelineno-20-2" name="__codelineno-20-2" href="#__codelineno-20-2"></a>brew<span class="w"> </span>install<span class="w"> </span>python@3.11<span class="w"> </span>node@22<span class="w"> </span>git<span class="w"> </span>uv
+<a id="__codelineno-20-3" name="__codelineno-20-3" href="#__codelineno-20-3"></a>
+<a id="__codelineno-20-4" name="__codelineno-20-4" href="#__codelineno-20-4"></a><span class="c1"># 2. Get the source</span>
+<a id="__codelineno-20-5" name="__codelineno-20-5" href="#__codelineno-20-5"></a>git<span class="w"> </span>clone<span class="w"> </span>https://github.com/ToroRojo-code/CatalogueCanvas.git
+<a id="__codelineno-20-6" name="__codelineno-20-6" href="#__codelineno-20-6"></a><span class="nb">cd</span><span class="w"> </span>CatalogueCanvas
+<a id="__codelineno-20-7" name="__codelineno-20-7" href="#__codelineno-20-7"></a>
+<a id="__codelineno-20-8" name="__codelineno-20-8" href="#__codelineno-20-8"></a><span class="c1"># 3. Build frontend + install backend</span>
+<a id="__codelineno-20-9" name="__codelineno-20-9" href="#__codelineno-20-9"></a><span class="o">(</span><span class="nb">cd</span><span class="w"> </span>web<span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span>npm<span class="w"> </span>ci<span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span>npm<span class="w"> </span>run<span class="w"> </span>build<span class="o">)</span>
+<a id="__codelineno-20-10" name="__codelineno-20-10" href="#__codelineno-20-10"></a><span class="o">(</span><span class="nb">cd</span><span class="w"> </span>server<span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span>uv<span class="w"> </span>sync<span class="o">)</span>
 </code></pre></div>
 </details>
 <details class="question">
@@ -1519,21 +1581,21 @@ Start it with the data directory bind-mounted and a restart policy so it comes b
 <li><code>git</code>, or download a source release ZIP instead</li>
 </ul>
 <p><strong>Step by step</strong></p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-19-1" name="__codelineno-19-1" href="#__codelineno-19-1"></a><span class="p">:</span><span class="c1">: 1. Toolchain via winget</span>
-<a id="__codelineno-19-2" name="__codelineno-19-2" href="#__codelineno-19-2"></a>winget install OpenJS.NodeJS.LTS astral-sh.uv Git.Git
-<a id="__codelineno-19-3" name="__codelineno-19-3" href="#__codelineno-19-3"></a>
-<a id="__codelineno-19-4" name="__codelineno-19-4" href="#__codelineno-19-4"></a><span class="p">:</span><span class="c1">: 2. Get the source (open a fresh terminal so PATH updates)</span>
-<a id="__codelineno-19-5" name="__codelineno-19-5" href="#__codelineno-19-5"></a>git clone https://github.com/ToroRojo-code/CatalogueCanvas.git
-<a id="__codelineno-19-6" name="__codelineno-19-6" href="#__codelineno-19-6"></a><span class="k">cd</span> CatalogueCanvas
-<a id="__codelineno-19-7" name="__codelineno-19-7" href="#__codelineno-19-7"></a>
-<a id="__codelineno-19-8" name="__codelineno-19-8" href="#__codelineno-19-8"></a><span class="p">:</span><span class="c1">: 3. Build the frontend</span>
-<a id="__codelineno-19-9" name="__codelineno-19-9" href="#__codelineno-19-9"></a><span class="k">cd</span> web
-<a id="__codelineno-19-10" name="__codelineno-19-10" href="#__codelineno-19-10"></a>npm ci
-<a id="__codelineno-19-11" name="__codelineno-19-11" href="#__codelineno-19-11"></a>npm run build
-<a id="__codelineno-19-12" name="__codelineno-19-12" href="#__codelineno-19-12"></a>
-<a id="__codelineno-19-13" name="__codelineno-19-13" href="#__codelineno-19-13"></a><span class="p">:</span><span class="c1">: 4. Sync backend dependencies</span>
-<a id="__codelineno-19-14" name="__codelineno-19-14" href="#__codelineno-19-14"></a><span class="k">cd</span> ..\server
-<a id="__codelineno-19-15" name="__codelineno-19-15" href="#__codelineno-19-15"></a>uv sync
+<div class="highlight"><pre><span></span><code><a id="__codelineno-21-1" name="__codelineno-21-1" href="#__codelineno-21-1"></a><span class="p">:</span><span class="c1">: 1. Toolchain via winget</span>
+<a id="__codelineno-21-2" name="__codelineno-21-2" href="#__codelineno-21-2"></a>winget install OpenJS.NodeJS.LTS astral-sh.uv Git.Git
+<a id="__codelineno-21-3" name="__codelineno-21-3" href="#__codelineno-21-3"></a>
+<a id="__codelineno-21-4" name="__codelineno-21-4" href="#__codelineno-21-4"></a><span class="p">:</span><span class="c1">: 2. Get the source (open a fresh terminal so PATH updates)</span>
+<a id="__codelineno-21-5" name="__codelineno-21-5" href="#__codelineno-21-5"></a>git clone https://github.com/ToroRojo-code/CatalogueCanvas.git
+<a id="__codelineno-21-6" name="__codelineno-21-6" href="#__codelineno-21-6"></a><span class="k">cd</span> CatalogueCanvas
+<a id="__codelineno-21-7" name="__codelineno-21-7" href="#__codelineno-21-7"></a>
+<a id="__codelineno-21-8" name="__codelineno-21-8" href="#__codelineno-21-8"></a><span class="p">:</span><span class="c1">: 3. Build the frontend</span>
+<a id="__codelineno-21-9" name="__codelineno-21-9" href="#__codelineno-21-9"></a><span class="k">cd</span> web
+<a id="__codelineno-21-10" name="__codelineno-21-10" href="#__codelineno-21-10"></a>npm ci
+<a id="__codelineno-21-11" name="__codelineno-21-11" href="#__codelineno-21-11"></a>npm run build
+<a id="__codelineno-21-12" name="__codelineno-21-12" href="#__codelineno-21-12"></a>
+<a id="__codelineno-21-13" name="__codelineno-21-13" href="#__codelineno-21-13"></a><span class="p">:</span><span class="c1">: 4. Sync backend dependencies</span>
+<a id="__codelineno-21-14" name="__codelineno-21-14" href="#__codelineno-21-14"></a><span class="k">cd</span> ..\server
+<a id="__codelineno-21-15" name="__codelineno-21-15" href="#__codelineno-21-15"></a>uv sync
 </code></pre></div>
 <div class="admonition warning">
 <p class="admonition-title">SVG previews need Cairo</p>
@@ -1546,19 +1608,19 @@ Start it with the data directory bind-mounted and a restart policy so it comes b
 <h3 id="run-it">Run it<a class="headerlink" href="#run-it" title="Permanent link">&para;</a></h3>
 <p>Once built, run the backend as a long-lived process. Leave off <code>--reload</code>, and set the required environment variables.</p>
 <p>On Linux and macOS:</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-20-1" name="__codelineno-20-1" href="#__codelineno-20-1"></a><span class="nv">CC_ADMIN_PASSWORD</span><span class="o">=</span>yourpassword<span class="w"> </span><span class="se">\</span>
-<a id="__codelineno-20-2" name="__codelineno-20-2" href="#__codelineno-20-2"></a><span class="nv">CC_DATA_DIR</span><span class="o">=</span>/srv/cataloguecanvas/data<span class="w"> </span><span class="se">\</span>
-<a id="__codelineno-20-3" name="__codelineno-20-3" href="#__codelineno-20-3"></a>uv<span class="w"> </span>run<span class="w"> </span>uvicorn<span class="w"> </span>cataloguecanvas.main:app<span class="w"> </span>--host<span class="w"> </span><span class="m">0</span>.0.0.0<span class="w"> </span>--port<span class="w"> </span><span class="m">8000</span>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-22-1" name="__codelineno-22-1" href="#__codelineno-22-1"></a><span class="nv">CC_ADMIN_PASSWORD</span><span class="o">=</span>yourpassword<span class="w"> </span><span class="se">\</span>
+<a id="__codelineno-22-2" name="__codelineno-22-2" href="#__codelineno-22-2"></a><span class="nv">CC_DATA_DIR</span><span class="o">=</span>/srv/cataloguecanvas/data<span class="w"> </span><span class="se">\</span>
+<a id="__codelineno-22-3" name="__codelineno-22-3" href="#__codelineno-22-3"></a>uv<span class="w"> </span>run<span class="w"> </span>uvicorn<span class="w"> </span>cataloguecanvas.main:app<span class="w"> </span>--host<span class="w"> </span><span class="m">0</span>.0.0.0<span class="w"> </span>--port<span class="w"> </span><span class="m">8000</span>
 </code></pre></div>
 <p>On Windows, set the variables the Docker entrypoint would normally set. A <code>run-cc.bat</code> keeps it in one place:</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-21-1" name="__codelineno-21-1" href="#__codelineno-21-1"></a><span class="p">@</span><span class="k">echo</span> off
-<a id="__codelineno-21-2" name="__codelineno-21-2" href="#__codelineno-21-2"></a><span class="k">cd</span> /d C:\path\to\CatalogueCanvas\server
-<a id="__codelineno-21-3" name="__codelineno-21-3" href="#__codelineno-21-3"></a><span class="k">set</span> <span class="nv">CC_ADMIN_PASSWORD</span><span class="p">=</span>changeme
-<a id="__codelineno-21-4" name="__codelineno-21-4" href="#__codelineno-21-4"></a><span class="k">set</span> <span class="nv">CC_SECRET_KEY</span><span class="p">=&lt;</span>random-hex&gt;
-<a id="__codelineno-21-5" name="__codelineno-21-5" href="#__codelineno-21-5"></a><span class="k">set</span> <span class="nv">CC_DATA_DIR</span><span class="p">=</span>C:\Users\<span class="p">&lt;</span>you<span class="p">&gt;</span>\cc-data
-<a id="__codelineno-21-6" name="__codelineno-21-6" href="#__codelineno-21-6"></a><span class="k">set</span> <span class="nv">CC_COOKIE_SECURE</span><span class="p">=</span>false
-<a id="__codelineno-21-7" name="__codelineno-21-7" href="#__codelineno-21-7"></a><span class="k">set</span> <span class="nv">CC_STATIC_DIR</span><span class="p">=</span>C:\path\to\CatalogueCanvas\web\dist
-<a id="__codelineno-21-8" name="__codelineno-21-8" href="#__codelineno-21-8"></a>uv run uvicorn cataloguecanvas.main:app --host 0.0.0.0 --port 8000
+<div class="highlight"><pre><span></span><code><a id="__codelineno-23-1" name="__codelineno-23-1" href="#__codelineno-23-1"></a><span class="p">@</span><span class="k">echo</span> off
+<a id="__codelineno-23-2" name="__codelineno-23-2" href="#__codelineno-23-2"></a><span class="k">cd</span> /d C:\path\to\CatalogueCanvas\server
+<a id="__codelineno-23-3" name="__codelineno-23-3" href="#__codelineno-23-3"></a><span class="k">set</span> <span class="nv">CC_ADMIN_PASSWORD</span><span class="p">=</span>changeme
+<a id="__codelineno-23-4" name="__codelineno-23-4" href="#__codelineno-23-4"></a><span class="k">set</span> <span class="nv">CC_SECRET_KEY</span><span class="p">=&lt;</span>random-hex&gt;
+<a id="__codelineno-23-5" name="__codelineno-23-5" href="#__codelineno-23-5"></a><span class="k">set</span> <span class="nv">CC_DATA_DIR</span><span class="p">=</span>C:\Users\<span class="p">&lt;</span>you<span class="p">&gt;</span>\cc-data
+<a id="__codelineno-23-6" name="__codelineno-23-6" href="#__codelineno-23-6"></a><span class="k">set</span> <span class="nv">CC_COOKIE_SECURE</span><span class="p">=</span>false
+<a id="__codelineno-23-7" name="__codelineno-23-7" href="#__codelineno-23-7"></a><span class="k">set</span> <span class="nv">CC_STATIC_DIR</span><span class="p">=</span>C:\path\to\CatalogueCanvas\web\dist
+<a id="__codelineno-23-8" name="__codelineno-23-8" href="#__codelineno-23-8"></a>uv run uvicorn cataloguecanvas.main:app --host 0.0.0.0 --port 8000
 </code></pre></div>
 <p>Then open <code>http://localhost:8000</code>, or <code>http://&lt;machine-ip&gt;:8000</code> from another device on the LAN.</p>
 <div class="admonition danger">
@@ -1572,7 +1634,7 @@ server falls back to an insecure default.</p>
 </div>
 <h2 id="connecting-a-local-llm">Connecting a local LLM<a class="headerlink" href="#connecting-a-local-llm" title="Permanent link">&para;</a></h2>
 <p>If CatalogueCanvas runs in Docker and your LLM server (LM Studio, Ollama, …) runs on the host, point the API URL at the host bridge, <strong>not</strong> <code>localhost</code>:</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-22-1" name="__codelineno-22-1" href="#__codelineno-22-1"></a>http://host.docker.internal:1234
+<div class="highlight"><pre><span></span><code><a id="__codelineno-24-1" name="__codelineno-24-1" href="#__codelineno-24-1"></a>http://host.docker.internal:1234
 </code></pre></div>
 <p><code>localhost</code> inside the container refers to the container itself.</p>
 <p>The <code>/v1/chat/completions</code> path is <strong>appended automatically</strong> — you only need the host and port. A full URL still works if you prefer to supply one.</p>
@@ -1596,6 +1658,10 @@ server falls back to an insecure default.</p>
 <tr>
 <td>Upload rejected</td>
 <td>File isn't a <code>.zip</code>, or exceeds the configured max upload size</td>
+</tr>
+<tr>
+<td>Everything returns <code>403</code> after upgrading</td>
+<td>External requests are now blocked by default. Set <code>CC_ALLOW_EXTERNAL_REQUESTS=true</code>, and add your reverse proxy to <code>CC_TRUSTED_PROXIES</code> if there is one. See <a href="../admins/#network-access">Network access</a></td>
 </tr>
 </tbody>
 </table>

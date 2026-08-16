@@ -689,6 +689,17 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
+  <a href="#activity-log" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Activity log
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#admin" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -968,6 +979,17 @@
     <span class="md-ellipsis">
       
         Tags
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#trusted-proxy" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Trusted proxy
       
     </span>
   </a>
@@ -1028,6 +1050,17 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
+  <a href="#activity-log" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Activity log
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#admin" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -1314,6 +1347,17 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#trusted-proxy" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Trusted proxy
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#webp" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -1349,6 +1393,11 @@
 <h1 id="glossary">Glossary<a class="headerlink" href="#glossary" title="Permanent link">&para;</a></h1>
 <p class="lead">Terminology used across CatalogueCanvas and this documentation.</p>
 
+<h2 id="activity-log">Activity log<a class="headerlink" href="#activity-log" title="Permanent link">&para;</a></h2>
+<p>A local record of every change made to the catalogue (who, when, what action, and what it
+touched), written as JSONL to <code>&lt;CC_DATA_DIR&gt;/logs/audit.log</code>. It records field names rather than
+values, so passwords, share tokens and note bodies never appear in it, and it is never
+transmitted anywhere. See <a href="../admins/#activity-log">Activity log</a>.</p>
 <h2 id="admin">Admin<a class="headerlink" href="#admin" title="Permanent link">&para;</a></h2>
 <p>A privileged user, authenticated by password + session cookie, with full access: upload, edit,
 organise, configure, and publish.</p>
@@ -1433,6 +1482,11 @@ controls are hidden.</p>
 as three words (e.g. <code>quiet-amber-loom</code>) or set manually. Must be unique.</p>
 <h2 id="tags">Tags<a class="headerlink" href="#tags" title="Permanent link">&para;</a></h2>
 <p>Free-form labels on items, addable individually or in <strong>bulk</strong>.</p>
+<h2 id="trusted-proxy">Trusted proxy<a class="headerlink" href="#trusted-proxy" title="Permanent link">&para;</a></h2>
+<p>A reverse proxy listed in <code>CC_TRUSTED_PROXIES</code>. Because every request behind a proxy arrives
+from the proxy's own address, the app reads the real client address from <code>X-Forwarded-For</code> —
+but only when the immediate peer is on this list. Trusting the header from any caller would let
+anyone claim to be a local client. See <a href="../admins/#behind-a-reverse-proxy">Behind a reverse proxy</a>.</p>
 <h2 id="webp">WebP<a class="headerlink" href="#webp" title="Permanent link">&para;</a></h2>
 <p>The image format CatalogueCanvas converts previews to — small and high quality.</p>
 
