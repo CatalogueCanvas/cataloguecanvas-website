@@ -12,11 +12,11 @@ title: Roadmap
 
 - :octicons-light-bulb-16: Render/store p5.js processing outputs
 - :octicons-light-bulb-16: Watermark on portfolio images
-- :octicons-light-bulb-16: Security audit for exposed versions
-- :octicons-light-bulb-16: Code Test [coverture](https://www.codacy.com/coverage)
 
 ## Shipped
 
+- :octicons-checkbox-16: Security audit for exposed versions
+- :octicons-checkbox-16: Code Test [coverture](https://www.codacy.com/coverage)
 - :octicons-checkbox-16: ZIP ingestion with content-hash deduplication
 - :octicons-checkbox-16: WebP preview conversion; LZ4-compressed SVG storage
 - :octicons-checkbox-16: Collections + built-in Favourites

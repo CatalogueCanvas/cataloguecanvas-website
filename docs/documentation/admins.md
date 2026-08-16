@@ -241,6 +241,21 @@ See [Configuration](install.md#configuration) for all available environment vari
 - **SVG previews are capped at 2500 pixels on the longest edge** (`CC_PREVIEW_MAX_EDGE`). Rasterising an SVG costs roughly the square of the output size, so without a cap a dense plotter file could take minutes and hold up an upload. The cap keeps the aspect ratio and never enlarges an image already below it. Set it to `0` to remove the limit. It applies to new ingests only; previews generated before the setting existed are unchanged.
 - **Ingestion runs off the request event loop.** Uploading a large or dense ZIP no longer blocks unrelated requests. Before this, one slow ingest could stall every other call on the worker, which behind a reverse proxy appeared as a `504` on the upload and on unrelated pages while the app's own log reported success.
 
+### Upload concurrency and memory
+
+`CC_MAX_CONCURRENT_UPLOADS` (default `4`) caps how many uploads ingest at the same time. Each
+concurrent ingest job can transiently hold up to `CC_MAX_ZIP_TOTAL_BYTES` of decompressed data in
+memory, so the cap bounds a burst's peak memory to roughly `CC_MAX_CONCURRENT_UPLOADS ×
+CC_MAX_ZIP_TOTAL_BYTES` — about 4 GiB at the defaults — rather than growing unchecked. Memory is
+also explicitly trimmed back after every ingest completes, so resident memory drops toward
+baseline once a burst finishes instead of staying at its peak until a restart.
+
+Requests beyond the cap simply wait their turn; there's no new error path and no change to the
+API response, just a longer wait if the server is already processing four uploads. On a
+memory-constrained host — a small VPS or a Raspberry Pi — lowering `CC_MAX_CONCURRENT_UPLOADS`
+trades upload latency under load for a lower memory ceiling. See
+[Configuration](install.md#configuration).
+
 ## Diagnostics
 
 Admins can download a **redacted Markdown diagnostic report** from Settings (or generate it via

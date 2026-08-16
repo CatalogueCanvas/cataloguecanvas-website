@@ -181,6 +181,11 @@ docker compose up --build
 | `CC_STATIC_DIR` | `web/dist` | Directory of built frontend assets to serve |
 | `CC_LLM_ALLOWED_HOSTS` | _(unset)_ | Comma-separated hostnames/IPs the Describe feature may call. Unset = no restriction. Set to protect against SSRF (e.g. `ollama.lan,192.168.1.50`) |
 | `CC_PREVIEW_MAX_EDGE` | `2500` | Longest edge in pixels for generated SVG previews. Caps rasterisation cost so a dense SVG can't stall an upload; `0` disables the cap |
+| `CC_MAX_UPLOAD_BYTES` | `1073741824` (1 GiB) | Maximum size of an uploaded ZIP file |
+| `CC_MAX_ZIP_MEMBER_BYTES` | `524288000` (500 MiB) | Maximum size of a single file inside an uploaded ZIP |
+| `CC_MAX_ZIP_TOTAL_BYTES` | `1073741824` (1 GiB) | Maximum total decompressed size of an uploaded ZIP |
+| `CC_MAX_ZIP_ENTRIES` | `10000` | Maximum number of files inside an uploaded ZIP |
+| `CC_MAX_CONCURRENT_UPLOADS` | `4` | How many uploads can ingest at once. Bounds peak memory during a burst to roughly this many × `CC_MAX_ZIP_TOTAL_BYTES`; lower it on memory-constrained hosts. See [Upload concurrency](admins.md#upload-concurrency-and-memory) |
 | `CC_INSTALL_TRACKING` | `0` | Set to `1` to allow the one-time anonymous install ping. See [Privacy](privacy.md) |
 | `CC_POSTHOG_HOST` | `https://eu.i.posthog.com` | Where telemetry events are sent — override to collect them yourself. See [Privacy](privacy.md) |
 | `CC_POSTHOG_KEY` | _(public capture key shipped with the image)_ | Override to send events to your own PostHog project. See [Privacy](privacy.md) |

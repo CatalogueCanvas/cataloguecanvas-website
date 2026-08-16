@@ -12,7 +12,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 Released versions are tagged (see `v*` tags and the published `ghcr.io` image); earlier
 pre-release entries are grouped by date.
 
-## [Unreleased]
+## [0.2.2] - 2026-08-16
 
 ### Added
 - Activity log. Every change is appended to `<CC_DATA_DIR>/logs/audit.log` as JSONL — who did it, when, what action, and what it touched — covering logins and failed logins, uploads, deletions, metadata and batch edits, CSV imports, collection/portfolio/user/library changes, share-token mint and clear, static exports, settings updates, and data exports. Nothing recorded mutations before this; the only trace was uvicorn's access log, which shows method, path and status but never identity. Only field *names* are recorded — passwords, password hashes, share tokens, note bodies, prompt templates and the LLM API URL never reach the log. The file rotates at `CC_AUDIT_LOG_MAX_BYTES` (default 5 MiB) keeping one previous generation, and writes are best-effort, so a read-only volume or full disc degrades to no logging rather than failing the request that triggered it. Disable with `CC_AUDIT_LOG=0`. See [Activity log](admins.md#activity-log).
@@ -27,6 +27,10 @@ pre-release entries are grouped by date.
 
 ### Fixed
 - `cc reset-password --password ""` now fails with an error instead of dropping into an interactive prompt, which would have hung a script whose password variable was unset.
+- Upload memory and thread count no longer ratchet upwards across a burst of uploads. Concurrent ingest jobs had no cap of their own beyond the framework's general-purpose 40-thread default, and glibc's allocator never returned freed heap memory to the OS once a thread had used it, so resident memory stayed at its peak after the burst finished. Fixed with a dedicated `CC_MAX_CONCURRENT_UPLOADS` (default `4`) semaphore around ingest, an explicit memory-trim call after each ingest completes, and a closed `PIL.Image` handle in `to_webp`. See [Configuration](install.md#configuration).
+
+### Security
+- Bumped `nanoid` (dev-only transitive, via `postcss`) to 3.3.18, fixing a denial-of-service where `customAlphabet`/`customRandom` loop forever when called with a `size` of `0` ([GHSA-2v37-7h3g-55p8](https://github.com/advisories/GHSA-2v37-7h3g-55p8)).
 
 ## [0.2.1] - 2026-07-29
 
