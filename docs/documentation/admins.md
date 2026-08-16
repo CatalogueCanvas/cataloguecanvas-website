@@ -107,7 +107,7 @@ admin login.
   <figcaption>Settings → Users (multi-user mode on, with Admin and Reader accounts)</figcaption>
 </figure>
 
-### Activity log
+### Activity log panel
 
 A table of recent entries (when, who, action, target, detail), with **Download log (CSV)** to
 take the whole file away, and **Delete log** behind a typed confirmation, the same
