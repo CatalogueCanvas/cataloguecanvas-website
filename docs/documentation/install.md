@@ -181,9 +181,19 @@ docker compose up --build
 | `CC_STATIC_DIR` | `web/dist` | Directory of built frontend assets to serve |
 | `CC_LLM_ALLOWED_HOSTS` | _(unset)_ | Comma-separated hostnames/IPs the Describe feature may call. Unset = no restriction. Set to protect against SSRF (e.g. `ollama.lan,192.168.1.50`) |
 | `CC_PREVIEW_MAX_EDGE` | `2500` | Longest edge in pixels for generated SVG previews. Caps rasterisation cost so a dense SVG can't stall an upload; `0` disables the cap |
+| `CC_MAX_UPLOAD_BYTES` | `1073741824` (1 GiB) | Maximum size of an uploaded ZIP file |
+| `CC_MAX_ZIP_MEMBER_BYTES` | `524288000` (500 MiB) | Maximum size of a single file inside an uploaded ZIP |
+| `CC_MAX_ZIP_TOTAL_BYTES` | `1073741824` (1 GiB) | Maximum total decompressed size of an uploaded ZIP |
+| `CC_MAX_ZIP_ENTRIES` | `10000` | Maximum number of files inside an uploaded ZIP |
+| `CC_MAX_CONCURRENT_UPLOADS` | `4` | How many uploads can ingest at once. Bounds peak memory during a burst to roughly this many × `CC_MAX_ZIP_TOTAL_BYTES`; lower it on memory-constrained hosts. See [Upload concurrency](admins.md#upload-concurrency-and-memory) |
 | `CC_INSTALL_TRACKING` | `0` | Set to `1` to allow the one-time anonymous install ping. See [Privacy](privacy.md) |
 | `CC_POSTHOG_HOST` | `https://eu.i.posthog.com` | Where telemetry events are sent — override to collect them yourself. See [Privacy](privacy.md) |
 | `CC_POSTHOG_KEY` | _(public capture key shipped with the image)_ | Override to send events to your own PostHog project. See [Privacy](privacy.md) |
+| `CC_ALLOW_EXTERNAL_REQUESTS` | `false` | When `false`, requests from public IP addresses are refused with `403` — every route, public portfolios included. Set `true` to serve public clients. See [Network access](admins.md#network-access) |
+| `CC_TRUSTED_PROXIES` | _(empty)_ | Comma-separated addresses of reverse proxies in front of the app. `X-Forwarded-For` is ignored unless the immediate peer is listed here. See [Behind a reverse proxy](admins.md#behind-a-reverse-proxy) |
+| `CC_AUDIT_LOG` | `1` | Set `0` to switch off the activity log. See [Activity log](admins.md#activity-log) |
+| `CC_AUDIT_LOG_PATH` | `<CC_DATA_DIR>/logs/audit.log` | Where the activity log is written |
+| `CC_AUDIT_LOG_MAX_BYTES` | `5242880` | Size (5 MiB) at which the activity log rotates, keeping one previous generation |
 
 !!! note "Editors"
 
@@ -214,6 +224,24 @@ The Vite dev server proxies API requests to the backend (see `web/vite.config.ts
 <p class="lead">How to move an existing install to a newer release without losing your data.</p>
 
 Everything in the `./data` volume (the database, uploaded assets, and the session key) is left in place, so upgrading does not touch your catalogue.
+
+!!! danger "Breaking change: public IP addresses are now blocked"
+
+    `CC_ALLOW_EXTERNAL_REQUESTS` now defaults to `false`. After upgrading, any request from a
+    public IP address is refused with `403` — on every route, **including public portfolio
+    links**. If you reach your instance over a public address, set:
+
+    ```dotenv
+    CC_ALLOW_EXTERNAL_REQUESTS=true
+    ```
+
+    Behind a reverse proxy, list it as well so the real client address can be read:
+
+    ```dotenv
+    CC_TRUSTED_PROXIES=172.18.0.2
+    ```
+
+    See [Network access](admins.md#network-access) for why the header needs an explicit trust list.
 
 **Docker (published image):**
 
@@ -466,3 +494,4 @@ The `/v1/chat/completions` path is **appended automatically** — you only need 
 | LLM request fails | Endpoint unreachable or misconfigured — the error now reports the actual cause (connection, HTTP error, non-JSON, or no choices returned). Check the API URL; use `host.docker.internal` from Docker |
 | Can't log in | `CC_ADMIN_PASSWORD` not set; in multi-user mode every user's password must be unique; or 5 failed attempts triggered the 5-minute rate limit |
 | Upload rejected | File isn't a `.zip`, or exceeds the configured max upload size |
+| Everything returns `403` after upgrading | External requests are now blocked by default. Set `CC_ALLOW_EXTERNAL_REQUESTS=true`, and add your reverse proxy to `CC_TRUSTED_PROXIES` if there is one. See [Network access](admins.md#network-access) |

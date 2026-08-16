@@ -38,9 +38,52 @@ Security notes:
 - Set a strong `CC_ADMIN_PASSWORD` in production (and a distinct password for every account in
   multi-user mode).
 
+## Network access
+
+!!! danger "Public IP addresses are blocked by default"
+
+    `CC_ALLOW_EXTERNAL_REQUESTS` defaults to `false`. Requests arriving from a public IP address
+    are refused with `403`; only private, loopback and link-local clients are served. If you
+    reach your instance over a public address, set this before upgrading:
+
+    ```dotenv
+    CC_ALLOW_EXTERNAL_REQUESTS=true
+    ```
+
+The default guards against the commonest self-hosting accident: a port forward that quietly puts
+the whole catalogue on the internet. It applies to **every route, public portfolio links
+included**, so publishing a portfolio to the world is something you opt into rather than
+something a stray router rule does for you.
+
+A blocked request returns this body:
+
+```json
+{
+  "detail": "external requests are disabled. Set CC_ALLOW_EXTERNAL_REQUESTS=true to serve public clients, or add your reverse proxy to CC_TRUSTED_PROXIES."
+}
+```
+
+### Behind a reverse proxy
+
+With nginx, Caddy, Traefik or a Cloudflare Tunnel in front, every request arrives from the
+proxy, so the check needs to know which address is the proxy and which is the real client. List
+the proxy:
+
+```dotenv
+CC_ALLOW_EXTERNAL_REQUESTS=true
+CC_TRUSTED_PROXIES=172.18.0.2
+```
+
+`X-Forwarded-For` is read **only** when the immediate peer is on that list. Trusting the header
+from any caller would let anyone claim to be `127.0.0.1` and walk past the check, so while
+`CC_TRUSTED_PROXIES` is empty the header has no effect at all.
+
+Blocked requests are recorded in the [activity log](#activity-log), rate-limited to one entry
+per source address per minute so a port scanner cannot fill your disc.
+
 ## Settings overview
 
-The **Settings** page groups: Appearance, Users, Usage statistics, LLM defaults, Prompt template, Libraries, and Backup & export.
+The **Settings** page groups: Appearance, Users, Activity log, Usage statistics, LLM defaults, Prompt template, Libraries, and Backup & export.
 
 ### Appearance
 
@@ -63,6 +106,18 @@ admin login.
   ![Multi-user access settings](../assets/sc_MultiUser_CatalogueCanvas.png)
   <figcaption>Settings → Users (multi-user mode on, with Admin and Reader accounts)</figcaption>
 </figure>
+
+### Activity log panel
+
+A table of recent entries (when, who, action, target, detail), with **Download log (CSV)** to
+take the whole file away, and **Delete log** behind a typed confirmation, the same
+type-this-phrase pattern the metadata backups use, so it cannot happen on a stray click.
+
+Clearing the log writes one final entry recording the clear, _after_ truncation. A wiped log
+therefore shows who wiped it and when, rather than reading as an install where nothing ever
+happened.
+
+See [Activity log](#activity-log) for the file format and what is recorded.
 
 ### Usage statistics
 
@@ -186,6 +241,21 @@ See [Configuration](install.md#configuration) for all available environment vari
 - **SVG previews are capped at 2500 pixels on the longest edge** (`CC_PREVIEW_MAX_EDGE`). Rasterising an SVG costs roughly the square of the output size, so without a cap a dense plotter file could take minutes and hold up an upload. The cap keeps the aspect ratio and never enlarges an image already below it. Set it to `0` to remove the limit. It applies to new ingests only; previews generated before the setting existed are unchanged.
 - **Ingestion runs off the request event loop.** Uploading a large or dense ZIP no longer blocks unrelated requests. Before this, one slow ingest could stall every other call on the worker, which behind a reverse proxy appeared as a `504` on the upload and on unrelated pages while the app's own log reported success.
 
+### Upload concurrency and memory
+
+`CC_MAX_CONCURRENT_UPLOADS` (default `4`) caps how many uploads ingest at the same time. Each
+concurrent ingest job can transiently hold up to `CC_MAX_ZIP_TOTAL_BYTES` of decompressed data in
+memory, so the cap bounds a burst's peak memory to roughly `CC_MAX_CONCURRENT_UPLOADS ×
+CC_MAX_ZIP_TOTAL_BYTES` — about 4 GiB at the defaults — rather than growing unchecked. Memory is
+also explicitly trimmed back after every ingest completes, so resident memory drops toward
+baseline once a burst finishes instead of staying at its peak until a restart.
+
+Requests beyond the cap simply wait their turn; there's no new error path and no change to the
+API response, just a longer wait if the server is already processing four uploads. On a
+memory-constrained host — a small VPS or a Raspberry Pi — lowering `CC_MAX_CONCURRENT_UPLOADS`
+trades upload latency under load for a lower memory ceiling. See
+[Configuration](install.md#configuration).
+
 ## Diagnostics
 
 Admins can download a **redacted Markdown diagnostic report** from Settings (or generate it via
@@ -197,6 +267,109 @@ a CLI script) to attach to a GitHub issue. It covers:
 - LLM configuration plus a **live endpoint reachability probe**.
 - Database counts.
 - A **storage-integrity check** (missing or orphaned files).
+- The effective **access policy**: whether external requests are allowed, and which proxies are
+  trusted.
+- **Activity-log status**: whether it is on, and where it writes.
+
+Those last two answer the "I can't reach my instance" question immediately, since the report
+shows at a glance whether the [external-request block](#network-access) is what's biting.
+
+## Activity log
+
+<p class="lead">Every change is recorded to a file on your own disc: who did it, when, what action, and what it touched.</p>
+
+Before this existed nothing recorded mutations at all. The only trace was uvicorn's access log,
+which gives method, path and status but never identity — so if two people shared an admin login,
+"who deleted that item?" had no answer.
+
+The log lives at `<CC_DATA_DIR>/logs/audit.log`. Tail it from the host with:
+
+```bash
+docker compose exec cataloguecanvas cat /data/logs/audit.log
+```
+
+### Format
+
+JSONL: one JSON object per line, with the fields `at`, `actor`, `role`, `action`, `target` and
+`detail`.
+
+```json
+{"at":"2026-08-03T14:22:07+00:00","actor":"admin","role":"admin","action":"item.delete","target":"lantern-042","detail":null}
+```
+
+One object per line means the file can be tailed, grepped, or shipped to a log collector without
+a schema migration or a database round-trip.
+
+### What is recorded
+
+Logins, failed logins and throttled logins; item uploads, deletions, metadata edits and all four
+batch operations; CSV imports; collection, portfolio, user and library create, update and delete;
+portfolio share-token mint and clear; static exports; settings updates; and database and
+full-backup downloads.
+
+### What is never written
+
+Passwords, password hashes, share-token values, note bodies, prompt templates, and the LLM API
+URL.
+
+Settings and item edits record **field names only**, as in `{"fields": ["llm_api_url"]}`, never
+the value behind it. Failed logins record the attempted username but never the password, and
+never the client IP.
+
+### Rotation and retention
+
+The file rolls over at `CC_AUDIT_LOG_MAX_BYTES` (default 5 MiB), keeping one previous generation
+as `audit.log.1`. Only two generations are kept, so the data volume cannot grow without bound.
+
+That does mean older history is discarded. If you need to keep it, export the CSV from Settings
+on a schedule, or ship the file somewhere else.
+
+### It never breaks a request
+
+Every write is best-effort. A read-only volume or a full disc degrades to no logging rather than
+failing the upload that triggered it — with the log directory made unwritable, a settings update
+still returns `200`.
+
+Configure it with `CC_AUDIT_LOG` (default `1`; set `0` to switch it off), `CC_AUDIT_LOG_PATH` and
+`CC_AUDIT_LOG_MAX_BYTES`. See [Configuration](install.md#configuration).
+
+## Command line tools
+
+<p class="lead">A maintenance CLI, <code>cc</code>, ships in the image. No rebuild needed.</p>
+
+```bash
+docker compose exec cataloguecanvas cc <command>
+```
+
+On a bare-metal install the same commands run as `uv run cc ...` from `server/`.
+
+| Command | What it does |
+|---|---|
+| `cc reset-password [--user NAME] [--password PW]` | Sets a password and **revokes every active session**, so a reset also invalidates a stolen cookie. Works for single-admin and multi-user installs. Prompts for the password when `--password` is omitted |
+| `cc backup [--out DIR]` | Writes the database plus all library files to a zip |
+| `cc restore ARCHIVE [--force]` | Restores a backup archive over the current data directory |
+| `cc ingest DIR [--library ID] [--force]` | Bulk-ingests every `.zip` under a directory, deduplicating by content hash. `--force` re-ingests files already present |
+| `cc diagnostics [--out FILE]` | The same redacted report Settings downloads, on stdout or to a file |
+
+`cc backup` and the Settings export share one code path, so the two archives are identical in
+structure.
+
+`cc ingest` reads from a mounted folder. `docker-compose.yml` mounts `./import` read-only at
+`/data/import` for it.
+
+### Restoring a backup
+
+`cc restore` has no equivalent in the interface; before it there was no restore path anywhere.
+Because it overwrites live data, it takes several precautions:
+
+- The archive is **validated before anything is extracted**. Path traversal (`../`), absolute
+  paths and symlink entries are rejected, so a corrupt or malicious archive cannot write outside
+  the data directory.
+- It refuses to overwrite a database that already holds items unless you pass `--force`.
+- The existing database is **renamed** to `catalogue.db.pre-restore-<timestamp>`, not deleted, so
+  a restore you regret is recoverable.
+- It prints what the archive contains and what it is about to overwrite, then asks for typed
+  confirmation — unless `--force`.
 
 ## Checking for updates
 
@@ -215,3 +388,5 @@ If a check fails because the instance is offline or rate-limited, the app ignore
 - [ ] Library paths mounted and writable
 - [ ] Regular backup routine in place
 - [ ] `CC_SITE_TITLE` / `CC_SITE_AUTHOR` set for public portfolios
+- [ ] `CC_ALLOW_EXTERNAL_REQUESTS` and `CC_TRUSTED_PROXIES` match how the instance is reached
+- [ ] Activity-log retention decided — only two generations are kept, so export the CSV if you need history

@@ -110,6 +110,18 @@ unreachable endpoint, a blackholed connection or a rate-limited response will no
 boot or slow a request. The install ping uses a short two-second timeout precisely so a dead
 network cannot stall startup.
 
+## The activity log is not telemetry
+
+Separately from any of the above, the app keeps an [activity log](admins.md#activity-log)
+recording who changed what and when. It sits next to the telemetry here so the two are not
+confused, because they are different things.
+
+The activity log is a file on your own disc, under your data directory. Nothing in it is
+transmitted, and none of it reaches PostHog or any other service. Unlike the trackers above it
+is on by default, since it is a local record rather than a report to anyone. It stores field
+names rather than values, so passwords, share tokens, note bodies and the LLM API URL never
+appear in it.
+
 ## This documentation site
 
 This site is a separate matter from the app. It uses Google Analytics and asks for cookie

@@ -13,7 +13,8 @@
   "MD025": false, // Single H1 — pages have frontmatter title + an # heading (false positive).
   "MD060": false, // Table column style — cosmetic pipe padding; renders identically in Material.
   "MD050": false, // Strong style — __bold__ (underscore) is valid and renders identically.
-  "MD053": false  // Reference definitions — pymdownx footnotes ([^x]) misread as unused (destructive on --fix).
+  "MD053": false, // Reference definitions — pymdownx footnotes ([^x]) misread as unused (destructive on --fix).
+  "MD024": { "siblings_only": true } // Duplicate headings — changelog.md repeats Added/Changed/Fixed per version; only flag dupes within the same parent section.
 
   // Everything else stays on via "default": true, including:
   // MD001 heading increment, MD009 trailing spaces, MD010 hard tabs, MD012 multiple
