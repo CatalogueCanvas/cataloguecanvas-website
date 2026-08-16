@@ -15,121 +15,148 @@ pre-release entries are grouped by date.
 ## [0.2.2] - 2026-08-16
 
 ### Added
+
 - Activity log. Every change is appended to `<CC_DATA_DIR>/logs/audit.log` as JSONL — who did it, when, what action, and what it touched — covering logins and failed logins, uploads, deletions, metadata and batch edits, CSV imports, collection/portfolio/user/library changes, share-token mint and clear, static exports, settings updates, and data exports. Nothing recorded mutations before this; the only trace was uvicorn's access log, which shows method, path and status but never identity. Only field *names* are recorded — passwords, password hashes, share tokens, note bodies, prompt templates and the LLM API URL never reach the log. The file rotates at `CC_AUDIT_LOG_MAX_BYTES` (default 5 MiB) keeping one previous generation, and writes are best-effort, so a read-only volume or full disc degrades to no logging rather than failing the request that triggered it. Disable with `CC_AUDIT_LOG=0`. See [Activity log](admins.md#activity-log).
 - **Settings → Activity log** panel: recent entries in a table, **Download log (CSV)**, and **Delete log** behind the same typed-confirmation pattern the metadata backups use. Clearing the log records the clear itself, written after truncation, so a wiped log shows who wiped it rather than looking untouched.
 - `cc` command line tool, installed in the image and available as `docker compose exec cataloguecanvas cc <command>` (or `uv run cc ...` from `server/` on bare metal). `cc reset-password` sets a password and revokes every active session, so a reset also invalidates a stolen cookie; `cc backup` writes the database plus all library files to a zip, sharing a code path with the Settings export so the archives match; `cc restore` is a new capability with no prior equivalent anywhere, validating the archive against path traversal, absolute paths and symlink entries before extracting, refusing to overwrite a populated database without `--force`, and renaming the existing database to `catalogue.db.pre-restore-<timestamp>` instead of deleting it; `cc ingest` bulk-ingests every `.zip` under a mounted folder, deduplicating by content hash; `cc diagnostics` prints the redacted report the Settings page downloads. See [Command line tools](admins.md#command-line-tools).
 - `server-dev` compose service and `server/Dockerfile.dev` for running the test suite in a container, matching the existing `web-dev` service. The shipped image installs with `--no-dev` and drops the build toolchain, so it cannot run the suite itself. Both sit behind the `dev` profile, so a plain `docker compose up` ignores them.
 
 ### Changed
+
 - **BREAKING:** `CC_ALLOW_EXTERNAL_REQUESTS` now defaults to `false`, so requests from public IP addresses are refused with `403`. This guards against the common self-hosting accident of a port forward silently exposing the whole catalogue, and it applies to every route **including public portfolio links**. Anyone reaching their instance over a public IP must set `CC_ALLOW_EXTERNAL_REQUESTS=true`; anyone behind a reverse proxy must additionally list it in `CC_TRUSTED_PROXIES` for the real client address to be read. `X-Forwarded-For` is ignored unless the immediate peer is a listed proxy — honouring it unconditionally would let any caller claim to be `127.0.0.1` and defeat the check. Blocked requests are logged once per source address per minute, so a scanner cannot fill the disc. See [Network access](admins.md#network-access).
 - The full-backup endpoint delegates to the shared backup helper, so the interface export and `cc backup` produce identical archive layouts.
 - The diagnostic report and the settings response now surface the effective access policy (external requests, trusted proxies) and the activity-log configuration — enough to tell at a glance whether the external-request block is why an instance is unreachable.
 
 ### Fixed
+
 - `cc reset-password --password ""` now fails with an error instead of dropping into an interactive prompt, which would have hung a script whose password variable was unset.
 - Upload memory and thread count no longer ratchet upwards across a burst of uploads. Concurrent ingest jobs had no cap of their own beyond the framework's general-purpose 40-thread default, and glibc's allocator never returned freed heap memory to the OS once a thread had used it, so resident memory stayed at its peak after the burst finished. Fixed with a dedicated `CC_MAX_CONCURRENT_UPLOADS` (default `4`) semaphore around ingest, an explicit memory-trim call after each ingest completes, and a closed `PIL.Image` handle in `to_webp`. See [Configuration](install.md#configuration).
 
 ### Security
+
 - Bumped `nanoid` (dev-only transitive, via `postcss`) to 3.3.18, fixing a denial-of-service where `customAlphabet`/`customRandom` loop forever when called with a `size` of `0` ([GHSA-2v37-7h3g-55p8](https://github.com/advisories/GHSA-2v37-7h3g-55p8)).
 
 ## [0.2.1] - 2026-07-29
 
 ### Added
+
 - `CC_PREVIEW_MAX_EDGE` (default `2500`) caps the longest edge of a generated SVG preview. Previews were rendered at a blind `scale=2.5` multiplier, so an 1870×2645 plotter SVG rasterised to 4675×6612 — cost grows with the square of the output size and was unbounded. Capping the longest edge cut a representative dense SVG from 7.2s to 2.2s while preserving the aspect ratio, and never upscales inputs already below the cap. Set it to `0` to disable. Applies to new ingests; existing previews are unchanged.
 
 ### Fixed
+
 - Uploading a ZIP no longer stalls the whole server. `POST /api/items/upload` ran the ingest, including SVG rasterisation, directly on the event loop, so a single dense file blocked every other request on the worker until it finished. Behind a reverse proxy this surfaced as a `504` on the upload *and* on unrelated `GET /api/items`, `/api/portfolios` and `/api/collections`, while the app's own log showed only `200 OK`. Ingest now runs in a threadpool.
 
 ### Changed
+
 - Dependency bumps merged from Dependabot: `fastapi` (>=0.139.2 → >=0.140.13), `uvicorn[standard]` (>=0.51.0 → >=0.52.0), `psutil` (>=6.0.0 → >=7.2.2), `jsdom` (29.1.1 → 30.0.1, dev), and the npm minor/patch group covering `@types/node`, `eslint` and `globals` (dev). Workflow action pins moved to `docker/login-action` v4.6.0 and `ossf/scorecard-action` v2.4.4.
 
 ## [0.2.0] - 2026-07-28
 
 ### Added
+
 - Anonymous, opt-in telemetry via PostHog (EU region). Nothing is sent by default. A one-time install ping fires on first boot only when `CC_INSTALL_TRACKING=1`, and a weekly usage-stats ping is toggled under Settings → Usage statistics and defaults to off. Both are keyed by a random per-instance ID stored under the data volume; no hostname, IP, paths, or catalogue content is ever sent. Operators can point at their own PostHog with `CC_POSTHOG_HOST` / `CC_POSTHOG_KEY`. See [Privacy](privacy.md) for the fields, payload examples, and how to switch both off.
 
 ### Changed
+
 - Added a dev-only `web-dev` service to `docker-compose.yml` for the web toolchain (install, lint, type-check, test). The shipped image is a production build with no devDependencies, so it cannot run these; the new service is pinned to the same `node:22-slim` digest as the Dockerfile's build stage and sits behind the `dev` compose profile, leaving `docker compose up` unchanged.
 
 ### Security
+
 - Migrated `react-router-dom` 7.18.1 → `react-router` 8.3.0, fixing a CSRF bypass in RSC code paths ([GHSA-qwww-vcr4-c8h2](https://github.com/advisories/GHSA-qwww-vcr4-c8h2)). The `react-router-dom` package no longer exists as of v8 — its exports moved into `react-router` itself, so this is an import-path rename across the web app with no API changes. The advisory only affects apps using the unstable RSC APIs, which this app does not.
 - Bumped `brace-expansion` (dev-only transitive, via eslint/minimatch) to 5.0.8, fixing a denial of service via unbounded expansion length ([GHSA-mh99-v99m-4gvg](https://github.com/advisories/GHSA-mh99-v99m-4gvg)).
 
 ## [0.1.6] - 2026-07-22
 
 ### Added
+
 - Portfolio index entries are now links. Each thumbnail in the "Works" index jumps to that item's section (`#work-<id>`), in both the live deck and the static zip export.
 
 ### Changed
+
 - Scroll-layout portfolios read as one continuous page: section rules are dropped everywhere except under the cover, which gains breathing room below it, and the index no longer repeats its heading or leaves a gap between pages.
 - `scripts/coverage-to-codacy.sh` accepts `--auto`/`--yes`/`--skip-regenerate` so it can run unattended, and fetches a version-pinned Codacy reporter binary verified against its published SHA-512 checksum instead of piping a rolling installer script straight into `bash`.
 - Web coverage thresholds now sit just below the measured level (lines 75, statements 72, functions 60, branches 60). The previous `branches: 80` floor was above actual coverage and failed the coverage run outright, while the lines/statements floors of 30 were far below it.
 - Dependency bumps: `codeql-action` init/analyze, `astral-sh/setup-uv`, `coverage`, `fastapi`, React/Vite/typescript-eslint minor-patch group, and `@testing-library/jest-dom` (major, 6→7).
 
 ### Fixed
+
 - Docker builds no longer report success when they fail. A `;` before a trailing `true` ended the `&&` chain in the dependency-install step, so `true` set the step's exit status and a failing `uv sync --frozen` or `apk del` still produced an image. The cache-purge failure is now suppressed with a braced `{ ...; || true; }` group, which scopes the guard to that one command; a bare trailing `|| true` would have applied to the whole chain and masked the same failures.
 - Codacy token parsing no longer strips spaces from inside the token value; only surrounding whitespace and quotes are trimmed.
 
 ### Security
+
 - Bumped `brace-expansion` (transitive, via eslint/minimatch) to 5.0.7, fixing a ReDoS vulnerability ([GHSA-3jxr-9vmj-r5cp](https://github.com/advisories/GHSA-3jxr-9vmj-r5cp)).
 
 ## [0.1.5] - 2026-07-18
 
 ### Added
+
 - Configurable LLM response wait timeout, set from Settings (default 90s) and applied to both single-item and batch description generation. The setting notes that for local LLM instances (Ollama, LM Studio) the right value is found by experience, since slow hardware or a cold model load can exceed 90 seconds.
 - "View items" link on each collection that opens the main Items page filtered to that collection (via a `?collection=` URL parameter), with a clearable filter chip showing the active collection.
 
 ### Changed
+
 - Item page now shows only an item's selected collections as chips by default, with an "Edit" button that reveals the full collection checklist and collapses back after saving. Previously every available collection was listed for every item, which grew unwieldy as collections accumulated.
 - Reworded the update-check help text in Settings for clarity.
 
 ### Fixed
+
 - Prev/next navigation arrows on the item page no longer clip at the glyph tips; their horizontal offset is nudged inward.
 
 ## [0.1.4] - 2026-07-15
 
 ### Added
+
 - Item images open at full size. Clicking the preview on an item page opens a lightbox that fits the image to the screen, toggles to 1:1 on click, and pans by dragging. Previews were already stored at full resolution, so no new assets are generated. Arrow-key item navigation is suspended while the lightbox is open.
 - Portfolio layout option, chosen per portfolio and independent of the theme: `slide` (the existing full-height deck, printable to PDF at 1920×1080) or `scroll` (a continuous one-page site with no page breaks and no print button). Any of the four themes can be published either way. Applies to the live portfolio and the static zip export. Existing portfolios default to `slide`.
 
 ### Fixed
+
 - The lightbox now fits the image to the screen at all times. Clicking to zoom to 1:1 opened large images past the edge of the viewport, so the zoom and drag-to-pan behaviour is gone.
 - "Preview deck" and the portfolio list's "View" button now carry the share token. Both linked to the untokenized URL, which returns 404 for a gated portfolio.
 
 ## [0.1.3] - 2026-07-11
 
 ### Added
+
 - Opt-in update check. An admin-only `/api/version` endpoint queries GitHub for the latest release (weekly throttle, no network unless enabled) and the footer surfaces when a newer version is available. Configurable from Settings.
 
 ### Fixed
+
 - LLM descriptions are now stored identically whether generated for a single item or in batch. Both paths use a shared `describeResultToNote` helper, so the full summary and bullet list are saved to the note instead of only the summary in the batch flow.
 
 ## [0.1.2] - 2026-07-10
 
 ### Fixed
+
 - LLM description pipeline: preview images (stored as WebP) were sent to the vision endpoint under a hardcoded `data:image/jpeg` label, so the bytes never matched the declared MIME type. This worked only on lenient runtimes and failed with `HTTP 400 Failed to load image or audio file` on LM Studio versions that trust the declared type (which accepts only jpeg/png). Previews are now transcoded to real JPEG before the request, and undecodable images raise a clear error.
 - Footer now displays the correct app version. `web/package.json` version was left at the default `0.0.0`, which Vite injects as `__APP_VERSION__` and the footer renders; bumped it to `0.1.1` to match the release.
 
 ## [0.1.1] - 2026-07-08
 
 ### Security
+
 - Bumped dependencies via Dependabot (consolidated): raised Python floors (fastapi 0.139.0, uvicorn 0.51.0, markdown 3.10.2, coverage 7.15.0, respx 0.23.1), web devDependencies (@types/node 26.1.1, @vitest/coverage-v8 4.1.10, typescript-eslint 8.63.0, vite 8.1.3, vitest 4.1.10), and pinned GitHub Actions (docker setup-buildx 4.2.0, docker login 4.4.0, docker build-push 7.3.0, codeql-action 4.37.0, astral-sh/setup-uv 8.3.2).
 - Earlier Dependabot batch: pinned GitHub Actions (checkout, upload-artifact, docker login/setup-buildx/metadata) and raised Python (fastapi, uvicorn, cairosvg, passlib, python-multipart) and web npm floors.
 
 ## [0.1.0] - 2026-06-30
 
 ### Added
+
 - Token-secured shared portfolio links: opt-in per-portfolio share token gates the public deck so a link without the token returns a 404; a valid token sets a cookie so the recipient can revisit without re-pasting it. Admins can require, regenerate, disable, and copy the link from the portfolio editor. Live server only — static exports remain unlisted.
 
 ## 2026-06-20
 
 ### Added
+
 - CSV batch metadata editing: export catalogue metadata to CSV, re-import edits with a preview of pending changes, and per-import lz4 backups.
 
 ### Changed
+
 - Updated repository links and footer.
 
 ### Security
+
 - Hardened Docker secret defaults.
 - Hardened request throttling, archive downloads, and exports.
 - Added revocable sessions and CSRF protection.
@@ -138,15 +165,18 @@ pre-release entries are grouped by date.
 ## 2026-06-19
 
 ### Added
+
 - Floating activity tray that tracks long-running background work (uploads, batch and single-item LLM descriptions) across page navigation.
 
 ### Changed
+
 - Cookies default to insecure over plain HTTP for LAN/local testing.
 - Updated README.
 
 ## 2026-06-18
 
 ### Added
+
 - Multi-user mode with admin and read-only reader roles.
 - Username-based login, reader downloads, an HTML 404 page, and a diagnostics endpoint/report.
 - Full-text metadata search across title, notes, tags, and flattened item metadata.
@@ -154,21 +184,25 @@ pre-release entries are grouped by date.
 - Batch LLM description button with per-batch API key prompt.
 
 ### Changed
+
 - Session signing key is now generated at the Docker entrypoint; LLM API URL is parsed and completed as needed.
 - Raised the LLM request timeout to 90 seconds.
 - Strip LLM reasoning from generated descriptions.
 
 ### Fixed
+
 - lz4 raw file download served correctly.
 
 ## 2026-06-16
 
 ### Added
+
 - Media folder support.
 
 ## 2026-06-15
 
 ### Added
+
 - Bulk item actions and a printable slide deck.
 - Slug generation, LLM Markdown fallback, item navigation, and an appearance API.
 - Icon mark, login logo, and collapsible item filters.
@@ -176,24 +210,29 @@ pre-release entries are grouped by date.
 - Secrets implementation, footer, and license.
 
 ### Security
+
 - Initial security hardening from an audit.
 
 ## 2026-06-14
 
 ### Added
+
 - Web server backend with database, Docker support, and a settings page.
 - Upload queue, LLM toggle, Markdown deck, and bind-mount support.
 - Grid redesign and theming.
 
 ### Changed
+
 - Moved the legacy static-site pipeline to `legacy/`.
 
 ### Fixed
+
 - Thumbnail cropping for all aspect ratios.
 
 ## 2026-06-13
 
 ### Added
+
 - Initial repository scaffold with configuration examples.
 - ZIP ingestion with generated item IDs and a multi-image preview notice.
 - LLM item description generator.

@@ -113,7 +113,7 @@ A table of recent entries (when, who, action, target, detail), with **Download l
 take the whole file away, and **Delete log** behind a typed confirmation, the same
 type-this-phrase pattern the metadata backups use, so it cannot happen on a stray click.
 
-Clearing the log writes one final entry recording the clear, *after* truncation. A wiped log
+Clearing the log writes one final entry recording the clear, _after_ truncation. A wiped log
 therefore shows who wiped it and when, rather than reading as an install where nothing ever
 happened.
 
